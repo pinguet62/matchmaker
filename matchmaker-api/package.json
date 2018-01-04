@@ -1,0 +1,23 @@
+{
+  "scripts": {
+    "start": "nodemon --legacy-watch --watch src/**/*.ts --ext ts --exec ts-node src/server.ts",
+    "lint": "tslint --config tslint.json --project tsconfig.json && tsc"
+  },
+  "dependencies": {
+    "@types/request-promise": "^4.1.39",
+    "express": "^4.16.2",
+    "promise": "^8.0.1",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "typescript-require": "^0.2.9-1"
+  },
+  "devDependencies": {
+    "@types/es6-promise": "^3.3.0",
+    "@types/express": "^4.11.0",
+    "@types/node": "^8.5.5",
+    "nodemon": "^1.14.7",
+    "ts-node": "^4.1.0",
+    "tslint": "^5.8.0",
+    "typescript": "2.6.2"
+  }
+}
