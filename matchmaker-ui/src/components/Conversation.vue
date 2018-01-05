@@ -6,7 +6,6 @@
 </template>
 
 <script>
-  import { propositions } from '../mocks'
   import Messages from './Messages'
   import Propositions from './Propositions'
 
@@ -17,13 +16,9 @@
     },
     name: 'Conversation',
     props: [
-      'messages'
-    ],
-    data () {
-      return {
-        propositions: propositions
-      }
-    }
+      'messages',
+      'propositions'
+    ]
   }
 </script>
 

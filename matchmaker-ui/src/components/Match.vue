@@ -1,16 +1,16 @@
 <template>
   <!--<v-layout row style="height: 100%;">-->
-    <!--<v-flex xs6>-->
-      <conversation :messages="messages"></conversation>
-    <!--</v-flex>-->
-    <!--<v-flex xs6>-->
-      <!--<profile></profile>-->
-    <!--</v-flex>-->
+  <!--<v-flex xs6>-->
+  <conversation :messages="messages" :propositions="propositions"></conversation>
+  <!--</v-flex>-->
+  <!--<v-flex xs6>-->
+  <!--<profile></profile>-->
+  <!--</v-flex>-->
   <!--</v-layout>-->
 </template>
 
 <script>
-  import { messages } from '../mocks'
+  import axios from 'axios'
   import Conversation from './Conversation'
   import Profile from './Profile'
 
@@ -22,7 +22,9 @@
     },
     data () {
       return {
-        messages: null
+        messages: null,
+        propositions: null,
+        profile: null
       }
     },
     created () {
@@ -34,9 +36,11 @@
       }
     },
     methods: {
-      refreshMatch (route) {
+      async refreshMatch (route) {
         let matchId = route.params.matchId
-        this.messages = messages[matchId]
+        this.messages = (await axios.get(`http://localhost:8081/matches/${matchId}/messages`)).data
+        this.propositions = (await axios.get(`http://localhost:8081/matches/${matchId}/propositions`)).data
+        this.profile = (await axios.get(`http://localhost:8081/user/matches/${matchId}`)).data
       }
     }
   }

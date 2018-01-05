@@ -20,15 +20,18 @@
 </template>
 
 <script>
-  import { matches } from './mocks'
+  import axios from 'axios'
 
   export default {
     name: 'app',
     data () {
       return {
         navigationDrawerOpen: true,
-        matches: matches
+        matches: []
       }
+    },
+    async created () {
+      this.matches = (await axios.get('http://localhost:8081/matches')).data
     },
     methods: {
       onMatchSelected (match) {
