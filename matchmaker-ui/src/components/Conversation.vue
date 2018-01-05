@@ -1,9 +1,9 @@
 <template>
   <div class="conversation">
     <messages v-model="messages" class="messages"/>
-    <div>
-      <propositions v-model="propositions" class="propositions"/>
-      <div class="proposition-user">
+    <div class="propositions">
+      <propositions v-model="propositions" class="proposition-list"/>
+      <div class="proposition-input">
         <v-text-field label="Propose un message..."/>
         <v-btn color="primary">Send</v-btn>
       </div>
@@ -35,21 +35,26 @@
 
 <style scoped>
   .conversation {
-    min-height: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
   }
 
   .messages {
-    flex-grow: 1;
-    /*overflow: auto;*/
+    flex: 1;
+    overflow: auto;
   }
 
   .propositions {
-    /*overflow: auto;*/
+    max-height: 25%;
+    overflow: auto;
   }
 
-  .proposition-user {
+  .proposition-list {
+    overflow: auto;
+  }
+
+  .proposition-input {
     /*display: flex;*/
   }
 </style>

@@ -12,12 +12,11 @@
         <v-toolbar-title>Tinder</v-toolbar-title>
       </v-toolbar>
 
-      <v-content>
+      <v-content style="height: 100vh;">
         <!--<v-container style="height: 100%;">-->
           <router-view/>
         <!--</v-container>-->
       </v-content>
-      <v-footer app></v-footer>
     </v-app>
   </div>
 </template>
