@@ -1,25 +1,32 @@
 <template>
   <div class="propositions">
-    <div v-for="proposition in value" class="proposition">
-      <v-badge>
-        <span slot="badge">+{{proposition.up}}</span>
-        <v-btn icon @click="upProposition(proposition)">
-          <v-icon>thumb_up</v-icon>
+    <div class="propositions-list">
+      <div v-for="proposition in value" class="propositions-list-item">
+        <v-badge>
+          <span slot="badge">+{{proposition.up}}</span>
+          <v-btn icon @click="upProposition(proposition)">
+            <v-icon>thumb_up</v-icon>
+          </v-btn>
+        </v-badge>
+
+        <v-badge right>
+          <span slot="badge">-{{proposition.down}}</span>
+          <v-btn icon @click="downProposition(proposition)">
+            <v-icon>thumb_down</v-icon>
+          </v-btn>
+        </v-badge>
+
+        <v-btn icon @click="deleteProposition(proposition)">
+          <v-icon>delete</v-icon>
         </v-btn>
-      </v-badge>
 
-      <v-badge right>
-        <span slot="badge">-{{proposition.down}}</span>
-        <v-btn icon @click="downProposition(proposition)">
-          <v-icon>thumb_down</v-icon>
-        </v-btn>
-      </v-badge>
+        <div>{{proposition.message}}</div>
+      </div>
+    </div>
 
-      <v-btn icon @click="deleteProposition(proposition)">
-        <v-icon>delete</v-icon>
-      </v-btn>
-
-      <div>{{proposition.message}}</div>
+    <div class="propositions-input">
+      <v-text-field label="Propose un message..."/>
+      <v-btn color="primary">Send</v-btn>
     </div>
   </div>
 </template>
@@ -51,10 +58,21 @@
 
 <style scoped>
   .propositions {
+    display: flex; /* elasticity */
+    flex-direction: column; /* elasticity */
   }
 
-  .proposition {
+  .propositions-list {
+    flex: 1; /* elasticity: use full free space */
+    overflow: auto; /* elasticity: limited so allow scroll */
+  }
+
+  .propositions-list-item {
     display: flex;
     align-items: center;
+  }
+
+  .propositions-input {
+    /*display: flex;*/
   }
 </style>
