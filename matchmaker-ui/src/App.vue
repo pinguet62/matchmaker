@@ -13,9 +13,7 @@
       </v-toolbar>
 
       <v-content style="height: 100vh;">
-        <!--<v-container style="height: 100%;">-->
-          <router-view/>
-        <!--</v-container>-->
+        <router-view/>
       </v-content>
     </v-app>
   </div>
