@@ -24,9 +24,11 @@
       </div>
     </div>
 
-    <div class="propositions-input">
-      <v-text-field label="Propose un message..."/>
-      <v-btn color="primary">Send</v-btn>
+    <div><!--fix-->
+      <div class="propositions-input">
+        <v-text-field label="Propose un message..."/>
+        <v-btn color="primary">Send</v-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -73,6 +75,7 @@
   }
 
   .propositions-input {
-    /*display: flex;*/
+    display: flex;
+    align-items: center;
   }
 </style>
