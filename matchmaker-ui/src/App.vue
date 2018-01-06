@@ -1,21 +1,8 @@
 <template>
-  <div id="app">
-    <v-app>
-      <v-navigation-drawer app clipped absolute v-model="navigationDrawerOpen">
-        <v-list>
-          <v-list-tile v-for="match in matches" @click="onMatchSelected(match)">{{match.person.name}}</v-list-tile>
-        </v-list>
-      </v-navigation-drawer>
-
-      <v-toolbar app absolute clipped-left>
-        <v-toolbar-side-icon @click.stop="navigationDrawerOpen = !navigationDrawerOpen"/>
-        <v-toolbar-title>Tinder</v-toolbar-title>
-      </v-toolbar>
-
-      <v-content style="height: 100vh;">
-        <router-view/>
-      </v-content>
-    </v-app>
+  <div>
+    <router-link to="/admin">Admin</router-link>
+    <router-link to="/user">User</router-link>
+    <router-view/>
   </div>
 </template>
 
