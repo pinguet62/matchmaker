@@ -1,22 +1,22 @@
 <template>
   <div class="propositions">
     <div class="propositions-list">
-      <div v-for="proposition in value" class="propositions-list-item">
+      <div v-for="proposition in value" :key="proposition._id" class="propositions-list-item">
         <v-badge>
           <span slot="badge">+{{proposition.up}}</span>
-          <v-btn icon @click="upProposition(proposition)">
+          <v-btn icon @click="$emit('up', proposition)">
             <v-icon>thumb_up</v-icon>
           </v-btn>
         </v-badge>
 
         <v-badge right>
           <span slot="badge">-{{proposition.down}}</span>
-          <v-btn icon @click="downProposition(proposition)">
+          <v-btn icon @click="$emit('down', proposition)">
             <v-icon>thumb_down</v-icon>
           </v-btn>
         </v-badge>
 
-        <v-btn icon @click="deleteProposition(proposition)">
+        <v-btn icon @click="$emit('delete', proposition)">
           <v-icon>delete</v-icon>
         </v-btn>
 
@@ -26,8 +26,8 @@
 
     <div><!--fix-->
       <div class="propositions-input">
-        <v-text-field label="Propose un message..."/>
-        <v-btn color="primary">Send</v-btn>
+        <v-text-field v-model="input" label="Propose un message..."/>
+        <v-btn @click="submitNewProposition()" color="primary">Send</v-btn>
       </div>
     </div>
   </div>
@@ -39,20 +39,19 @@
     props: {
       'value': {
         required: true,
-        type: Array,
-        validator: value2 => value2.every(value => value.message && value.up && value.down)
+        type: Array
+      }
+    },
+    data () {
+      return {
+        'input': null
       }
     },
     methods: {
-      deleteProposition (proposition) {
-        // TODO
-      },
-      upProposition (proposition) {
-        proposition.up++ // TODO
-        console.log('TODO', '+1: ' + JSON.stringify(proposition))
-      },
-      downProposition (proposition) {
-        proposition.down-- // TODO
+      submitNewProposition () {
+        let proposition = {message: this.input}
+        this.$emit('new', proposition)
+        this.input = null
       }
     }
   }

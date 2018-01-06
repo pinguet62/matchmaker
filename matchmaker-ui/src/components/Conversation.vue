@@ -1,7 +1,10 @@
 <template>
   <div class="conversation">
     <messages v-model="messages" class="messages"/>
-    <propositions v-model="propositions" class="propositions"/>
+    <propositions v-model="propositions"
+                  @new="$emit('newProposition', $event)" @delete="$emit('deleteProposition', $event)"
+                  @up="$emit('upProposition', $event)" @down="$emit('downProposition', $event)"
+                  class="propositions"/>
   </div>
 </template>
 

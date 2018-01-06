@@ -1,7 +1,9 @@
 <template>
   <!--<v-layout row style="height: 100%;">-->
   <!--<v-flex xs6>-->
-  <conversation :messages="messages" :propositions="propositions"></conversation>
+  <conversation :messages="messages" :propositions="propositions"
+                @newProposition="onNewProposition($event)" @deleteProposition="onDeleteProposition($event)"
+                @upProposition="onUpProposition($event)" @downProposition="onDownProposition($event)"/>
   <!--</v-flex>-->
   <!--<v-flex xs6>-->
   <!--<profile></profile>-->
@@ -22,8 +24,9 @@
     },
     data () {
       return {
-        messages: null,
-        propositions: null,
+        matchId: null,
+        messages: [],
+        propositions: [],
         profile: null
       }
     },
@@ -37,10 +40,28 @@
     },
     methods: {
       async refreshMatch (route) {
-        let matchId = route.params.matchId
-        this.messages = (await axios.get(`http://localhost:8081/matches/${matchId}/messages`)).data
-        this.propositions = (await axios.get(`http://localhost:8081/matches/${matchId}/propositions`)).data
-        this.profile = (await axios.get(`http://localhost:8081/user/matches/${matchId}`)).data
+        this.matchId = route.params.matchId
+        this.messages = (await axios.get(`http://localhost:8081/matches/${this.matchId}/messages`)).data
+        this.propositions = (await axios.get(`http://localhost:8081/matches/${this.matchId}/propositions`)).data
+        this.profile = (await axios.get(`http://localhost:8081/user/matches/${this.matchId}`)).data
+      },
+      async onNewProposition (proposition) {
+        console.log(proposition)
+        let createdProposition = (await axios.post(`http://localhost:8081/matches/${this.matchId}/propositions`, proposition)).data
+        this.propositions.push(createdProposition)
+      },
+      async onDeleteProposition (proposition) {
+        let propositionId = proposition._id
+        await axios.delete(`http://localhost:8081/matches/${this.matchId}/propositions/${propositionId}`)
+        this.propositions.splice(this.propositions.findIndex(it => it._id === propositionId), 1)
+      },
+      async onUpProposition (proposition) {
+        let updatedProposition = (await axios.put(`http://localhost:8081/matches/${this.matchId}/propositions/${proposition._id}/up`)).data
+        proposition.up = updatedProposition.up
+      },
+      async onDownProposition (proposition) {
+        let updatedProposition = (await axios.put(`http://localhost:8081/matches/${this.matchId}/propositions/${proposition._id}/down`)).data
+        proposition.down = updatedProposition.down
       }
     }
   }
