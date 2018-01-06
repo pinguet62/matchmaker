@@ -1,14 +1,14 @@
 <template>
-  <!--<v-layout row style="height: 100%;">-->
-  <!--<v-flex xs6>-->
-  <conversation :messages="messages" :propositions="propositions"
-                @newProposition="onNewProposition($event)" @deleteProposition="onDeleteProposition($event)"
-                @upProposition="onUpProposition($event)" @downProposition="onDownProposition($event)"/>
-  <!--</v-flex>-->
-  <!--<v-flex xs6>-->
-  <!--<profile></profile>-->
-  <!--</v-flex>-->
-  <!--</v-layout>-->
+  <v-layout row fill-height>
+    <v-flex xs6>
+      <conversation :messages="messages" :propositions="propositions"
+                    @newProposition="onNewProposition($event)" @deleteProposition="onDeleteProposition($event)"
+                    @upProposition="onUpProposition($event)" @downProposition="onDownProposition($event)"/>
+    </v-flex>
+    <v-flex xs6>
+      <profile v-if="profile" v-model="profile"></profile>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -43,10 +43,9 @@
         this.matchId = route.params.matchId
         this.messages = (await axios.get(`http://localhost:8081/matches/${this.matchId}/messages`)).data
         this.propositions = (await axios.get(`http://localhost:8081/matches/${this.matchId}/propositions`)).data
-        this.profile = (await axios.get(`http://localhost:8081/user/matches/${this.matchId}`)).data
+        this.profile = (await axios.get(`http://localhost:8081/user/${this.matchId}`)).data
       },
       async onNewProposition (proposition) {
-        console.log(proposition)
         let createdProposition = (await axios.post(`http://localhost:8081/matches/${this.matchId}/propositions`, proposition)).data
         this.propositions.push(createdProposition)
       },

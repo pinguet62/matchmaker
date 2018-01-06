@@ -1,9 +1,9 @@
 import {Application} from "express";
 import {createProposition, decrementProposition, deleteProposition, getPropositions, incrementProposition} from "./proposition-services";
-import {getMatches, getMessagesByMatch, getUserByMatch} from "./tinder-services";
+import {getMatches, getMessagesByMatch, getUser} from "./tinder-services";
 
 export function registerRoutes(app: Application) {
-    app.get("/user/matches/:matchId", async (req, res) => res.json(await getUserByMatch(req.params.matchId)));
+    app.get("/user/:id", async (req, res) => res.json(await getUser(req.params.id)));
 
     app.get("/matches", async (req, res) => res.json(await getMatches()));
     app.get("/matches/:matchId/messages", async (req, res) => res.json(await getMessagesByMatch(req.params.matchId)));

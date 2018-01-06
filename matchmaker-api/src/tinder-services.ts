@@ -13,16 +13,17 @@ interface IUserDto {
     photos: IPhoto[];
 }
 
-export async function getUserByMatch(matchId: string): Promise<IUserDto> {
+export async function getUser(userOrMatchId: string): Promise<IUserDto> {
+    const userId = userOrMatchId.length === 48 ? userOrMatchId.substr(24, 24) : userOrMatchId;
     const tinderResponse: any = await request({
         headers: {
             "x-auth-token": token,
         },
         json: true,
         method: "GET",
-        url: `https://api.gotinder.com/user/matches/${matchId}`,
+        url: `https://api.gotinder.com/user/${userId}`,
     });
-    return tinderResponse.results.person;
+    return tinderResponse.results;
 }
 
 interface IMatchDto {
