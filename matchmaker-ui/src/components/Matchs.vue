@@ -3,7 +3,7 @@
     <v-app>
       <v-navigation-drawer app clipped absolute v-model="navigationDrawerOpen">
         <v-list>
-          <v-list-tile v-for="match in matches" @click="onMatchSelected(match)">{{match.person.name}}</v-list-tile>
+          <v-list-tile v-for="match in matches" :key="match._id" @click="onMatchSelected(match)">{{match.person.name}}</v-list-tile>
         </v-list>
       </v-navigation-drawer>
 
