@@ -1,0 +1,9 @@
+language: node_js
+
+install:
+  - (cd matchmaker-api && npm install)
+  - (cd matchmaker-ui && npm install)
+
+script: true
+  # - (cd matchmaker-api && npm test)
+  # - (cd matchmaker-ui && npm test)
