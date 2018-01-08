@@ -31,7 +31,7 @@
       }
     },
     async created () {
-      this.matches = (await axios.get('http://localhost:8081/matches')).data
+      this.matches = (await axios.get(`${process.env.API_URL}/matches`)).data
     },
     methods: {
       onMatchSelected (match) {
