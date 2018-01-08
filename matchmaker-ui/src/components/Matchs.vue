@@ -31,11 +31,11 @@
       }
     },
     async created () {
-      this.matches = (await axios.get(`${process.env.API_URL}/matches`)).data
+      this.matches = (await axios.get(`${process.env.API_URL}/${this.$route.params.sharedLinkLink}/matches`)).data
     },
     methods: {
       onMatchSelected (match) {
-        this.$router.push(`/user/${match._id}`)
+        this.$router.push(`/user/${this.$route.params.sharedLinkLink}/${match._id}`)
       }
     }
   }

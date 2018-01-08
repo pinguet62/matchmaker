@@ -24,6 +24,7 @@
     },
     data () {
       return {
+        sharedLinkLink: null,
         matchId: null,
         messages: [],
         propositions: [],
@@ -31,6 +32,7 @@
       }
     },
     created () {
+      this.sharedLinkLink = this.$route.params.sharedLinkLink
       this.refreshMatch(this.$route)
     },
     watch: {
@@ -41,9 +43,9 @@
     methods: {
       async refreshMatch (route) {
         this.matchId = route.params.matchId
-        this.messages = (await axios.get(`${process.env.API_URL}/matches/${this.matchId}/messages`)).data
+        this.messages = (await axios.get(`${process.env.API_URL}/${this.sharedLinkLink}/matches/${this.matchId}/messages`)).data
         this.propositions = (await axios.get(`${process.env.API_URL}/matches/${this.matchId}/propositions`)).data
-        this.profile = (await axios.get(`${process.env.API_URL}/user/${this.matchId}`)).data
+        this.profile = (await axios.get(`${process.env.API_URL}/${this.sharedLinkLink}/user/${this.matchId}`)).data
       },
       async onNewProposition (proposition) {
         let createdProposition = (await axios.post(`${process.env.API_URL}/matches/${this.matchId}/propositions`, proposition)).data
