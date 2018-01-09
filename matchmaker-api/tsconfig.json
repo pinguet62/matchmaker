@@ -5,6 +5,8 @@
     "lib": [
       "es2016"
     ],
-    "noEmit": true
+    "noEmit": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   }
 }

@@ -43,7 +43,7 @@
       return {
         userId: null,
         tinderLoginDialog: false,
-        tinderToken: null,
+        tinderToken: '',
         sharedLinks: [],
         selectedSharedLink: null,
         matches: []

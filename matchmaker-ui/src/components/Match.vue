@@ -52,16 +52,16 @@
         this.propositions.push(createdProposition)
       },
       async onDeleteProposition (proposition) {
-        let propositionId = proposition._id
+        let propositionId = proposition.id
         await axios.delete(`${process.env.API_URL}/matches/${this.matchId}/propositions/${propositionId}`)
-        this.propositions.splice(this.propositions.findIndex(it => it._id === propositionId), 1)
+        this.propositions.splice(this.propositions.findIndex(it => it.id === propositionId), 1)
       },
       async onUpProposition (proposition) {
-        let updatedProposition = (await axios.put(`${process.env.API_URL}/matches/${this.matchId}/propositions/${proposition._id}/up`)).data
+        let updatedProposition = (await axios.put(`${process.env.API_URL}/matches/${this.matchId}/propositions/${proposition.id}/up`)).data
         proposition.up = updatedProposition.up
       },
       async onDownProposition (proposition) {
-        let updatedProposition = (await axios.put(`${process.env.API_URL}/matches/${this.matchId}/propositions/${proposition._id}/down`)).data
+        let updatedProposition = (await axios.put(`${process.env.API_URL}/matches/${this.matchId}/propositions/${proposition.id}/down`)).data
         proposition.down = updatedProposition.down
       }
     }
