@@ -6,7 +6,7 @@
                     @upProposition="onUpProposition($event)" @downProposition="onDownProposition($event)"/>
     </v-flex>
     <v-flex xs6>
-      <profile v-if="profile" v-model="profile"></profile>
+      <profile v-if="profile" v-model="profile"/>
     </v-flex>
   </v-layout>
 </template>

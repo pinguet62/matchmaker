@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <router-link to="/admin">Admin</router-link>
-    <router-link to="/user">User</router-link>
+  <v-app>
     <router-view/>
-  </div>
+  </v-app>
 </template>
 
 <script>

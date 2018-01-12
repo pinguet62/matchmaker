@@ -38,6 +38,7 @@
   }
 
   .propositions {
-    max-height: 25%; /* elasticity: proportion */
+    flex: 0 0 0%; /* elasticity: from 0% ... */
+    max-height: 35%; /* elasticity: ... to 35% */
   }
 </style>

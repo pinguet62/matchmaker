@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Empty from '@/components/layout/Empty'
+import EmptyRouterView from '@/components/layout/EmptyRouterView'
+import Home from '@/components/Home'
 import Admin from '@/components/admin/Admin'
-import Empty from '@/components/Empty'
-import EmptyRouterView from '@/components/EmptyRouterView'
-import LinkSelection from '@/components/LinkSelection'
-import Matchs from '@/components/Matchs'
-import Match from '@/components/Match'
+import LinkSelection from '@/components/user/LinkSelection'
+import Matchs from '@/components/user/Matchs'
+import Match from '@/components/user/Match'
 
 Vue.use(Router)
 
@@ -13,7 +14,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: Empty
+      component: Home
     },
     {
       path: '/admin',

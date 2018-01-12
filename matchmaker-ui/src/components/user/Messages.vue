@@ -1,12 +1,12 @@
 <template>
-  <div class="messages">
+  <v-container class="messages">
     <div v-for="message in [...value].reverse()" class="message-line" v-bind:class="[message.from === me ? 'sent' : 'received']">
       <small>{{message.sent_date | parseIso8601 | date}}</small>
       <div class="message-bubble">
         {{message.message}}
       </div>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -30,6 +30,7 @@
   .messages {
     display: inline-block;
     width: 100%;
+    /*margin-bottom: 28px; !* floating button *!*/
   }
 
   .message-line {
