@@ -53,6 +53,6 @@ export async function getMessagesByMatch(token: string, matchId: string): Promis
         },
         json: true,
         method: "GET",
-        url: `https://api.gotinder.com/v2/matches/${matchId}/messages`,
+        url: `https://api.gotinder.com/v2/matches/${matchId}/messages?count=100`,
     }).then((x) => x.data.messages);
 }

@@ -7,9 +7,7 @@ import {connect} from "./database/connection";
 import {exceptionHandler} from "./exceptions";
 import {registerRoutes} from "./router";
 
-start();
-
-async function start() {
+(async () => {
     await connect();
 
     const app: Application = express();
@@ -20,4 +18,4 @@ async function start() {
     app.use(exceptionHandler);
 
     app.listen(process.env.PORT || 8081);
-}
+})();
