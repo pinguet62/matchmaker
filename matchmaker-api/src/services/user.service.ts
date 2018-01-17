@@ -1,20 +1,25 @@
 import {SharedLink, User} from "../database/entities";
 import {userRepositoryFactory} from "../database/repositories";
 import {NotFoundException} from "../exceptions";
+import {getMeta} from "../tinder";
 
 /**
  * @param token {@link User#token}
  * @return {Promise<string>} {@link User#id}
  */
 export async function login(token: string): Promise<string> {
-    let user = await userRepositoryFactory().findOneByToken(token);
+    const tinderUserId = await getMeta(token).then((x) => x.user._id);
 
+    let user = await userRepositoryFactory().findOneByTinderUserId(tinderUserId);
     // create account if not exists
     if (!user) {
-        user = new User()
-        user.token = token;
-        await userRepositoryFactory().save(user);
+        user = new User();
+        user.tinderUserId = tinderUserId;
     }
+    // refresh token
+    user.token = token;
+
+    await userRepositoryFactory().save(user);
 
     return user.id;
 }

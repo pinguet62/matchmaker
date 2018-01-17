@@ -12,10 +12,10 @@ export const propositionRepositoryFactory: () => PropositionRepository & MongoRe
 export class UserRepository extends MongoRepository<User> {
 
     /**
-     * @param token {@link User#token}
+     * @param tinderUserId {@link User#tinderUserId}
      */
-    public findOneByToken(token: string): Promise<User | undefined> {
-        return super.findOne({token});
+    public findOneByTinderUserId(tinderUserId: string): Promise<User | undefined> {
+        return super.findOne({tinderUserId});
     }
 
     /**

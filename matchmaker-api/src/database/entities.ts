@@ -6,6 +6,9 @@ export class User {
     public id: ObjectID;
 
     @Column()
+    public tinderUserId: string;
+
+    @Column()
     public token: string;
 
     @Column((type: any) => SharedLink)

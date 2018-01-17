@@ -24,6 +24,21 @@ export interface IMessage {
     sent_date: string;
 }
 
+export interface IMetaDto {
+    user: IUserDto
+}
+
+export async function getMeta(token: string): Promise<IMetaDto> {
+    return request({
+        headers: {
+            "x-auth-token": token,
+        },
+        json: true,
+        method: "GET",
+        url: `https://api.gotinder.com/meta`,
+    });
+}
+
 export async function getUser(token: string, userId: string): Promise<IUserDto> {
     return await request({
         headers: {
