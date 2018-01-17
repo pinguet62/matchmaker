@@ -59,9 +59,11 @@
       async onUpProposition (proposition) {
         let updatedProposition = (await axios.put(`${process.env.API_URL}/matches/${this.matchId}/propositions/${proposition.id}/up`)).data
         proposition.up = updatedProposition.up
+        proposition.down = updatedProposition.down
       },
       async onDownProposition (proposition) {
         let updatedProposition = (await axios.put(`${process.env.API_URL}/matches/${this.matchId}/propositions/${proposition.id}/down`)).data
+        proposition.up = updatedProposition.up
         proposition.down = updatedProposition.down
       }
     }
