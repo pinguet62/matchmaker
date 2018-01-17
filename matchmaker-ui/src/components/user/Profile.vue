@@ -1,7 +1,7 @@
 <template>
   <div class="profile">
     <v-carousel>
-      <v-carousel-item v-for="photo in value.photos" :key="photo.id" v-bind:src="photo.url" cycle="false"/>
+      <v-carousel-item v-for="photo in value.photos" :key="photo.id" v-bind:src="photo.url"/>
     </v-carousel>
     <v-container fluid class="profile-details">
       <h2>{{value.name}}</h2>
@@ -48,13 +48,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .profile {
-
-  }
-
-  .profile-details {
-
-  }
-</style>

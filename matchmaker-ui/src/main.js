@@ -8,6 +8,7 @@ Vue.config.productionTip = false
 
 import('vuetify/dist/vuetify.min.css')
 Vue.use(Vuetify)
+import('../static/vuetify-override.css')
 
 Vue.filter('date', date)
 Vue.filter('parseIso8601', parseIso8601)
