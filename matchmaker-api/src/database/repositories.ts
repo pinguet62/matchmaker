@@ -1,4 +1,4 @@
-import {EntityRepository, getCustomRepository, getMongoRepository} from "typeorm";
+import {EntityRepository, getCustomRepository} from "typeorm";
 import {MongoRepository} from "typeorm/repository/MongoRepository";
 import {Proposition, SharedLink, User} from "./entities";
 

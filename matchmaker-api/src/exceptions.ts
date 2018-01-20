@@ -14,6 +14,9 @@ export class UnauthorizedException extends Error {
 export class NotFoundException extends Error {
 }
 
+export class ValidationError extends Error {
+}
+
 export function exceptionHandler(err: any, req: Request, res: Response, next: NextFunction) {
     switch (err.constructor) {
         case UnauthorizedException:
@@ -21,6 +24,9 @@ export function exceptionHandler(err: any, req: Request, res: Response, next: Ne
             break;
         case NotFoundException:
             res.status(404).send(err);
+            break;
+        case ValidationError:
+            res.status(422).send(err);
             break;
         default:
             res.status(500).send(err);

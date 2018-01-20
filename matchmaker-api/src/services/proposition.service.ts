@@ -3,9 +3,11 @@ import {propositionRepositoryFactory} from "../database/repositories";
 import {NotFoundException} from "../exceptions";
 
 export async function createProposition(matchId: string, proposition: Proposition): Promise<Proposition> {
-    proposition.match = matchId;
+    const entity = new Proposition();
+    entity.match = matchId;
+    entity.message = proposition.message;
 
-    return propositionRepositoryFactory().save(proposition);
+    return propositionRepositoryFactory().save(entity);
 }
 
 export async function getPropositions(matchId: string): Promise<Proposition[]> {
