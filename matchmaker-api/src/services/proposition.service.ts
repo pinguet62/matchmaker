@@ -2,10 +2,10 @@ import {Proposition} from "../database/entities";
 import {propositionRepositoryFactory} from "../database/repositories";
 import {NotFoundException} from "../exceptions";
 
-export async function createProposition(matchId: string, proposition: Proposition): Promise<Proposition> {
+export async function createProposition(matchId: string, message: string): Promise<Proposition> {
     const entity = new Proposition();
     entity.match = matchId;
-    entity.message = proposition.message;
+    entity.message = message;
 
     return propositionRepositoryFactory().save(entity);
 }

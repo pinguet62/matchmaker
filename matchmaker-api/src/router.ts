@@ -10,7 +10,7 @@ export function registerRoutes(app: Application) {
     app.get("/:sharedLinkLink/matches", async (req, res) => res.json(await getMatchesByUserSharedLinkLink(req.params.sharedLinkLink)));
     app.get("/:sharedLinkLink/matches/:matchId/messages", async (req, res) => res.json(await getMessagesByMatch(req.params.sharedLinkLink, req.params.matchId)));
 
-    app.post("/matches/:matchId/propositions", async (req, res) => res.json(await createProposition(req.params.matchId, req.body)));
+    app.post("/matches/:matchId/propositions", async (req, res) => res.json(await createProposition(req.params.matchId, req.body.message)));
     app.get("/matches/:matchId/propositions", async (req, res) => res.json(await getPropositions(req.params.matchId)));
     app.put("/matches/:matchId/propositions/:propositionId/up", async (req, res) => res.json(await incrementProposition(req.params.matchId, req.params.propositionId, hashUser(req))));
     app.put("/matches/:matchId/propositions/:propositionId/down", async (req, res) => res.json(await decrementProposition(req.params.matchId, req.params.propositionId, hashUser(req))));

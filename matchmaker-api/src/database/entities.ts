@@ -1,4 +1,4 @@
-import {IsArray, IsDefined, IsInt, IsNotEmpty, IsOptional, Min, ValidateNested} from "class-validator";
+import {IsArray, IsDefined, IsInt, IsNotEmpty, IsOptional, IsString, Min, ValidateNested} from "class-validator";
 import {ObjectID} from "mongodb";
 import {Column, Entity, ObjectIdColumn} from "typeorm";
 import {IsInstance} from "../utils";
@@ -55,6 +55,7 @@ export class Proposition {
     public match: string;
 
     @Column()
+    @IsString()
     @IsNotEmpty()
     public message: string;
 

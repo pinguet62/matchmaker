@@ -59,8 +59,7 @@
     },
     methods: {
       submitNewProposition () {
-        let proposition = {message: this.input}
-        this.$emit('new', proposition)
+        this.$emit('new', this.input)
         this.newPropositionDialog = false
         this.input = null
       }

@@ -47,8 +47,8 @@
         this.propositions = (await axios.get(`${process.env.API_URL}/matches/${this.matchId}/propositions`)).data
         this.profile = (await axios.get(`${process.env.API_URL}/${this.sharedLinkLink}/user/${this.matchId}`)).data
       },
-      async onNewProposition (proposition) {
-        let createdProposition = (await axios.post(`${process.env.API_URL}/matches/${this.matchId}/propositions`, proposition)).data
+      async onNewProposition (message) {
+        let createdProposition = (await axios.post(`${process.env.API_URL}/matches/${this.matchId}/propositions`, {message})).data
         this.propositions.push(createdProposition)
       },
       async onDeleteProposition (proposition) {
