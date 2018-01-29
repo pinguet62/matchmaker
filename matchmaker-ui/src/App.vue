@@ -5,7 +5,10 @@
 </template>
 
 <script>
+  import currentUser from './stores/currentUser.store'
+
   export default {
-    name: 'app'
+    name: 'app',
+    store: currentUser
   }
 </script>

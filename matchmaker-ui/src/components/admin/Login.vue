@@ -50,8 +50,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
-
   export default {
     name: 'Login',
     data () {
@@ -62,10 +60,9 @@
     },
     methods: {
       async tinderLogin () {
+        this.$store.dispatch('login', this.tinderToken)
         this.tinderLoginDialog = false
-        let userId = (await axios.post(`${process.env.API_URL}/login`, {token: this.tinderToken})).data
         this.tinderToken = null
-        this.$emit('onUserId', userId)
       }
     }
   }

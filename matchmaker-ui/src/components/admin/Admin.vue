@@ -1,7 +1,7 @@
 <template>
   <div>
-    <login v-if="!userId" @onUserId="userId = $event"></login>
-    <logged v-if="userId" :userId="userId"></logged>
+    <login v-if="!$store.getters.isLogged"></login>
+    <logged v-if="$store.getters.isLogged"></logged>
   </div>
 </template>
 
@@ -14,11 +14,6 @@
       Login,
       Logged
     },
-    name: 'Admin',
-    data () {
-      return {
-        userId: null
-      }
-    }
+    name: 'Admin'
   }
 </script>

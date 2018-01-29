@@ -88,11 +88,10 @@
 
   export default {
     name: 'Logged',
-    props: ['userId'],
     data () {
       return {
         window: window,
-        tinderToken: '',
+        userId: this.$store.state.userId,
         sharedLinks: [],
         selectedSharedLink: null,
         matches: []
