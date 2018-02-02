@@ -10,5 +10,5 @@ export function parseIso8601 (value) {
 
 export function calculateAge (value) {
   if (!value) return null
-  return new Date().getYear() - value.getYear() - 1
+  return new Date().getFullYear() - value.getFullYear() - 1
 }

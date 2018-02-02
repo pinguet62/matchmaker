@@ -2,13 +2,24 @@ import * as request from "request-promise";
 
 export interface IMatchDto {
     _id: string;
+    messages: IMessage[];
     person: IUserDto;
+}
+
+export interface IJobDto {
+    company?: { name: string };
+    title?: { name: string };
 }
 
 export interface IUserDto {
     _id: string;
+    bio?: string;
+    birth_date: string; // 1989-xx-xxTxx:xx:xx.xxxZ
     name: string;
-    photos: IPhoto[];
+    photos: IPhoto[]; // TODO check if default is []
+    jobs: IJobDto[];
+    schools: Array<{ id: string, name: string }>;
+    distance_mi: number;
 }
 
 export interface IPhoto {

@@ -3,16 +3,16 @@
     <v-navigation-drawer app clipped absolute v-model="navigationDrawerOpen">
       <v-list>
         <template v-for="match in matches">
-          <v-list-tile avatar :to="'/user/' + $route.params.sharedLinkLink + '/' + match._id">
+          <v-list-tile avatar :to="'/user/' + $route.params.sharedLinkLink + '/' + match.id">
             <v-list-tile-avatar>
-              <img v-bind:src="match.person.photos[0].url">
+              <img v-bind:src="match.person.photo">
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title v-html="match.person.name"/>
-              <v-list-tile-sub-title v-html="match.messages[0] ? match.messages[0].message : ''"/>
+              <v-list-tile-sub-title v-if="match.lastMessage" v-html="match.lastMessage.text"/>
             </v-list-tile-content>
             <v-list-tile-action>
-              <v-icon small v-if="match.messages[0] && match.messages[0].from === '52b4d9ed6c5685412c0002a1'">reply</v-icon>
+              <v-icon small v-if="match.lastMessage && match.lastMessage.sent">reply</v-icon>
             </v-list-tile-action>
           </v-list-tile>
           <v-divider/>

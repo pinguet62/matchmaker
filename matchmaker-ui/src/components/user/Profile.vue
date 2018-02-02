@@ -1,34 +1,34 @@
 <template>
-  <div class="profile">
+  <div>
     <v-carousel>
-      <v-carousel-item v-for="photo in value.photos" :key="photo.id" v-bind:src="photo.url"/>
+      <v-carousel-item v-for="photo in value.photos" :key="photo" v-bind:src="photo"/>
     </v-carousel>
-    <v-container fluid class="profile-details">
+    <v-container fluid>
       <h2>{{value.name}}</h2>
       <v-divider/>
-      <div class="profile-details-keyvalue">
+      <div>
         <div>
           <v-icon>timelapse</v-icon>
-          <span>{{value.birth_date | parseIso8601 | age}} ans</span>
+          <span>{{value.age}} ans</span>
         </div>
         <template v-for="job in value.jobs">
           <div>
             <v-icon>card_travel</v-icon>
-            <span>{{formatJob(job)}}</span>
+            <span>{{job}}</span>
           </div>
         </template>
         <div v-for="school in value.schools">
           <v-icon>school</v-icon>
-          <span>{{school.name}}</span>
+          <span>{{school}}</span>
         </div>
         <div>
           <v-icon>room</v-icon>
-          <span>{{'à ' + value.distance_mi + ' km de distance'}}</span>
+          <span>{{'à ' + value.distance + ' km de distance'}}</span>
         </div>
       </div>
       <v-divider/>
-      <div v-if="value.bio" class="profile-details-bio">
-        <span>{{value.bio}}</span>
+      <div v-if="value.description">
+        <span>{{value.description}}</span>
       </div>
     </v-container>
   </div>
@@ -37,14 +37,6 @@
 <script>
   export default {
     name: 'Profile',
-    props: ['value'],
-    methods: {
-      formatJob (jobs) {
-        if (jobs.title && jobs.company) return `${jobs.title.name} chez ${jobs.company.name}`
-        else if (jobs.title) return jobs.title.name
-        else if (jobs.company) return jobs.company.name
-        else return null
-      }
-    }
+    props: ['value']
   }
 </script>
