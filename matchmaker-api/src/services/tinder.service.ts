@@ -1,3 +1,4 @@
+import {User} from "../database/entities";
 import {userRepositoryFactory} from "../database/repositories";
 import {NotFoundException} from "../exceptions";
 import * as tinder from "../tinder";
@@ -21,14 +22,14 @@ export function calculateAge(birthDate: string) {
 }
 
 export async function getUser(sharedLinkLink: string, tinderUserOrMatchId: string): Promise<Person> {
-    const user = await userRepositoryFactory().findOneBySharedLinkLink(sharedLinkLink);
+    const user: User = await userRepositoryFactory().findOneBySharedLinkLink(sharedLinkLink);
     if (!user) {
         throw new NotFoundException();
     }
 
     const tinderUserId = tinderUserOrMatchId.length === 48 ? tinderUserOrMatchId.substr(24, 24) : tinderUserOrMatchId;
 
-    return tinder.getUser(user.token, tinderUserId)
+    return tinder.getUser(user.credentials.tinder.token, tinderUserId)
         .then((it) => {
             return {
                 age: calculateAge(it.birth_date),
@@ -44,16 +45,16 @@ export async function getUser(sharedLinkLink: string, tinderUserOrMatchId: strin
 }
 
 export async function getMatchesByUser(userId: string): Promise<IMatchDto[]> {
-    const user = await userRepositoryFactory().findOneById(userId);
+    const user: User = await userRepositoryFactory().findOneById(userId);
     if (!user) {
         throw new NotFoundException();
     }
 
-    return tinder.getMatches(user.token);
+    return tinder.getMatches(user.credentials.tinder.token);
 }
 
 export async function getMatchesByUserSharedLinkLink(sharedLinkLink: string): Promise<Match[]> {
-    const user = await userRepositoryFactory().findOneBySharedLinkLink(sharedLinkLink);
+    const user: User = await userRepositoryFactory().findOneBySharedLinkLink(sharedLinkLink);
     if (!user) {
         throw new NotFoundException();
     }
@@ -63,13 +64,13 @@ export async function getMatchesByUserSharedLinkLink(sharedLinkLink: string): Pr
         throw new NotFoundException();
     }
 
-    const matches = await tinder.getMatches(user.token);
+    const matches = await tinder.getMatches(user.credentials.tinder.token);
     return matches.filter((it) => sharedLink.matchIds.includes(it._id)) // right restriction
         .map((it) => {
             return {
                 id: it._id,
                 lastMessage: it.messages.length === 0 ? undefined : {
-                    sent: user.tinderUserId === it.messages[0].from,
+                    sent: user.credentials.tinder.userId === it.messages[0].from,
                     text: it.messages[0].message,
                 },
                 person: {
@@ -81,17 +82,17 @@ export async function getMatchesByUserSharedLinkLink(sharedLinkLink: string): Pr
 }
 
 export async function getMessagesByMatch(sharedLinkLink: string, matchId: string): Promise<Message[]> {
-    const user = await userRepositoryFactory().findOneBySharedLinkLink(sharedLinkLink);
+    const user: User = await userRepositoryFactory().findOneBySharedLinkLink(sharedLinkLink);
     if (!user) {
         throw new NotFoundException();
     }
 
-    return tinder.getMessagesByMatch(user.token, matchId)
+    return tinder.getMessagesByMatch(user.credentials.tinder.token, matchId)
         .then((x) => x.map((it) => {
                 return {
                     date: new Date(it.sent_date),
-                    received: user.tinderUserId !== it.from,
-                    sent: user.tinderUserId === it.from,
+                    received: user.credentials.tinder.userId !== it.from,
+                    sent: user.credentials.tinder.userId === it.from,
                     text: it.message,
                 };
             }),

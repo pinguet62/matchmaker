@@ -28,7 +28,7 @@ export function IsInstance(targetType: new (...args: any[]) => any, validationOp
             validator: {
                 validate(value: any, valicationArguments: ValidationArguments) {
                     if (validationOptions && validationOptions.each) {
-                        return value.every((item) => item instanceof targetType);
+                        return value.every((item: any) => item instanceof targetType);
                     } else {
                         return value instanceof targetType;
                     }

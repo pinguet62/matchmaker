@@ -17,6 +17,21 @@ export class SharedLink {
     }
 }
 
+export class TinderCredentials {
+    @IsDefined()
+    public userId: string;
+
+    @Column()
+    @IsNotEmpty()
+    public token: string;
+}
+
+class Credentials {
+    @IsDefined()
+    @ValidateNested()
+    public tinder?: TinderCredentials;
+}
+
 @Entity()
 export class User {
     @ObjectIdColumn()
@@ -26,11 +41,8 @@ export class User {
 
     @Column()
     @IsDefined()
-    public tinderUserId: string;
-
-    @Column()
-    @IsNotEmpty()
-    public token: string;
+    @ValidateNested()
+    public credentials: Credentials = new Credentials();
 
     @Column((type: any) => SharedLink)
     @IsArray()
