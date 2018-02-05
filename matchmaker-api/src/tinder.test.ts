@@ -5,7 +5,7 @@ const userId = "";
 const matchId = "";
 
 describe.skip("tinder", () => {
-    test(getMeta.name, async () => {
+    test(`${getMeta}`, async () => {
         const result = await getMeta(token);
 
         expect(result).toHaveProperty("user");
@@ -13,7 +13,7 @@ describe.skip("tinder", () => {
         expect(result).toHaveProperty("user.name");
     });
 
-    test(getUser.name, async () => {
+    test(`${getUser}`, async () => {
         const result = await getUser(token, userId);
 
         expect(result).toHaveProperty("_id");
@@ -26,7 +26,7 @@ describe.skip("tinder", () => {
         expect(result).toHaveProperty("distance_mi");
     });
 
-    test(getMatches.name, async () => {
+    test(`${getMatches}`, async () => {
         const result = await getMatches(token);
 
         expect(Array.isArray(result)).toBe(true);
@@ -40,7 +40,7 @@ describe.skip("tinder", () => {
         }
     });
 
-    test(getMessagesByMatch.name, async () => {
+    test(`${getMessagesByMatch}`, async () => {
         const result = await getMessagesByMatch(token, matchId);
 
         expect(Array.isArray(result)).toBe(true);

@@ -10,7 +10,7 @@ function mockRepository(repositoryFactoryName: string, mocks: { [repositoryMetho
 describe("services/proposition.service", () => {
     afterEach(() => jest.restoreAllMocks());
 
-    describe("incrementProposition", () => {
+    describe(`${incrementProposition}`, () => {
         test("Throw 'NotFoundException' if unknown 'Proposition.id'", async () => {
             mockRepository("propositionRepositoryFactory", {findOneById: (id) => Promise.resolve(null)});
 
@@ -87,7 +87,7 @@ describe("services/proposition.service", () => {
         });
     });
 
-    describe("decrementProposition", () => {
+    describe(`${decrementProposition}`, () => {
         test("Throw 'NotFoundException' if unknown 'Proposition.id'", async () => {
             mockRepository("propositionRepositoryFactory", {findOneById: (id) => Promise.resolve(null)});
             await expect(decrementProposition("any", "unknown", "any")).rejects.toThrow(NotFoundException);
@@ -163,7 +163,7 @@ describe("services/proposition.service", () => {
         });
     });
 
-    describe("deleteProposition", () => {
+    describe(`${deleteProposition}`, () => {
         test("Throw 'NotFoundException' if unknown 'Proposition.id'", async () => {
             mockRepository("propositionRepositoryFactory", {findOneById: (id) => Promise.resolve(null)});
 

@@ -4,7 +4,7 @@ const authorization = "";
 const matchId = "";
 
 describe.skip("once", () => {
-    test(getConnections.name, async () => {
+    test(`${getConnections}`, async () => {
         const result = await getConnections(authorization);
 
         expect(Array.isArray(result)).toBe(true);
@@ -14,7 +14,7 @@ describe.skip("once", () => {
         }
     });
 
-    test(getMessagesByMatch.name, async () => {
+    test(`${getMessagesByMatch}`, async () => {
         const result = await getMessagesByMatch(authorization, matchId);
 
         expect(Array.isArray(result)).toBe(true);
@@ -28,7 +28,7 @@ describe.skip("once", () => {
         }
     });
 
-    test(getMatch.name, async () => {
+    test(`${getMatch}`, async () => {
         const result = await getMatch(authorization, matchId);
 
         expect(result).toHaveProperty("id");
