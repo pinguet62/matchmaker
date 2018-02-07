@@ -2,7 +2,7 @@ import {replace, reset, when} from "testdouble";
 import {User} from "../database/entities";
 import {userRepositoryFactory} from "../database/repositories";
 import {mockDatabase} from "../testHelper";
-import * as tinder from "../tinder";
+import * as tinder from "../providers/tinder/tinder-client";
 import {login} from "./user.service";
 
 describe("user.service", () => {

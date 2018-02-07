@@ -36,7 +36,7 @@ export interface IMessage {
 }
 
 export interface IMetaDto {
-    user: IUserDto
+    user: IUserDto;
 }
 
 export async function getMeta(token: string): Promise<IMetaDto> {

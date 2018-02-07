@@ -1,4 +1,4 @@
-import {getConnections, getMatch, getMessagesByMatch} from "./once";
+import {getConnections, getMatch, getMessagesByMatch} from "./once-client";
 
 const authorization = "";
 const matchId = "";

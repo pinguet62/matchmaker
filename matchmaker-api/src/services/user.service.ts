@@ -1,7 +1,7 @@
 import {SharedLink, TinderCredentials, User} from "../database/entities";
 import {userRepositoryFactory} from "../database/repositories";
 import {NotFoundException} from "../exceptions";
-import {getMeta} from "../tinder";
+import {getMeta} from "../providers/tinder/tinder-client";
 
 /**
  * @param tinderToken {@link User#token}
@@ -48,7 +48,7 @@ export async function getSharedLinks(userId: string): Promise<SharedLink[]> {
     return user.sharedLinks;
 }
 
-export async function updateSharedLinkMatchs(userId: string, sharedLinkLink: string, matchIds: string[]): Promise<SharedLink> {
+export async function updateSharedLinkMatches(userId: string, sharedLinkLink: string, matchIds: string[]): Promise<SharedLink> {
     const user: User = await userRepositoryFactory().findOneById(userId);
     if (!user) {
         throw new NotFoundException();

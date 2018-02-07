@@ -65,13 +65,13 @@
             <template v-for="match in matches">
               <v-list-tile avatar>
                 <v-list-tile-avatar>
-                  <img v-bind:src="match.person.photos[0].url">
+                  <img v-bind:src="match.person.photo">
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title v-html="match.person.name"/>
                 </v-list-tile-content>
                 <v-list-tile-action>
-                  <v-switch v-model="selectedSharedLink.matchIds" :value="match._id" hide-details/>
+                  <v-switch v-model="selectedSharedLink.matchIds" :value="match.id" hide-details/>
                 </v-list-tile-action>
               </v-list-tile>
               <v-divider/>

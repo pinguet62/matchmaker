@@ -1,4 +1,4 @@
-import {calculateAge, formatJob} from "./tinder.service";
+import {calculateAge, formatJob} from "./tinder-provider";
 
 describe("tinder.service", () => {
     afterEach(() => jest.restoreAllMocks());

@@ -1,4 +1,4 @@
-import {getMatches, getMessagesByMatch, getMeta, getUser} from "./tinder";
+import {getMatches, getMessagesByMatch, getMeta, getUser} from "./tinder-client";
 
 const token = "";
 const userId = "";
