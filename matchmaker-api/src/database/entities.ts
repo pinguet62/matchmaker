@@ -26,10 +26,23 @@ export class TinderCredentials {
     public token: string;
 }
 
+export class OnceCredentials {
+    @IsDefined()
+    public userId: string;
+
+    @Column()
+    @IsNotEmpty()
+    public authorization: string;
+}
+
 class Credentials {
     @IsDefined()
     @ValidateNested()
     public tinder?: TinderCredentials;
+
+    @IsDefined()
+    @ValidateNested()
+    public once?: OnceCredentials;
 }
 
 @Entity()

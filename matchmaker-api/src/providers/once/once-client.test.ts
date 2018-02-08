@@ -7,11 +7,13 @@ describe.skip("once", () => {
     test(`${getConnections}`, async () => {
         const result = await getConnections(authorization);
 
-        expect(Array.isArray(result)).toBe(true);
-        expect(result).not.toHaveLength(0);
-        for (const it of result) {
+        expect(result).toHaveProperty("connections");
+        expect(Array.isArray(result.connections)).toBe(true);
+        expect(result.connections).not.toHaveLength(0);
+        for (const it of result.connections) {
             expect(it).toHaveProperty("user");
         }
+        expect(result).toHaveProperty("base_url");
     });
 
     test(`${getMessagesByMatch}`, async () => {

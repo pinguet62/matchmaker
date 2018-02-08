@@ -1,10 +1,18 @@
 import * as request from "request-promise";
 
+export interface IConnectionResults {
+    connections: IConnectionDto[];
+    base_url: string; // for `connections.*.pictures.*.original`
+}
+
 export interface IConnectionDto {
     user: IUserDto;
-    commons: {
-        distance: { km: number },
-    };
+    match_id: string; // "MEAxxxxxxxxx"
+    sender_id: string; // IUser.id
+    receiver_id: string; // IUser.id
+    last_message: string; // default: "Vous avez été connectés"
+    last_message_id: number; // default: 0
+    message_sent_at: number;
 }
 
 export interface IUserDto {
@@ -14,8 +22,8 @@ export interface IUserDto {
     description?: string;
     pictures: IPictureDto[];
     occupation: {
-        employer: string,
-        position: string,
+        employer?: string, // TODO test
+        position?: string,
     };
     education: Array<{
         school_type: string,
@@ -41,6 +49,9 @@ export interface IMatchDto {
     id: string;
     number: number;
     user: IUserDto;
+    commons: {
+        distance: { km: number },
+    };
 }
 
 export async function getMatch(authorization: string, matchId: string): Promise<IMatchDto> {
@@ -54,7 +65,7 @@ export async function getMatch(authorization: string, matchId: string): Promise<
     }).then((x) => x.result.match);
 }
 
-export async function getConnections(authorization: string): Promise<IConnectionDto[]> {
+export async function getConnections(authorization: string): Promise<IConnectionResults> {
     return request({
         headers: {
             authorization,
@@ -62,7 +73,7 @@ export async function getConnections(authorization: string): Promise<IConnection
         json: true,
         method: "GET",
         url: "https://onceapi.com/v1/connections",
-    }).then((x) => x.result.connections);
+    }).then((x) => x.result);
 }
 
 export async function getMessagesByMatch(authorization: string, matchId: string): Promise<IMessage[]> {
