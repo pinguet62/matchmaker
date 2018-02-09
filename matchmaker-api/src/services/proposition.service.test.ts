@@ -1,18 +1,22 @@
+import {function as tdFunction, matchers, replace, reset, when} from "testdouble";
 import * as repositories from "../database/repositories";
 import {NotFoundException} from "../exceptions";
 import {decrementProposition, deleteProposition, incrementProposition} from "./proposition.service";
 
-function mockRepository(repositoryFactoryName: string, mocks: { [repositoryMethodName: string]: (...args: any[]) => any }) {
-    const fake = jest.fn().mockImplementation(() => mocks);
-    (repositories as any)[repositoryFactoryName] = fake.bind(repositories);
-}
-
 describe("services/proposition.service", () => {
-    afterEach(() => jest.restoreAllMocks());
+    let findOneById: any;
+    let save: any;
+    beforeEach(() => {
+        const propositionRepositoryFactory = replace(repositories, "propositionRepositoryFactory");
+        findOneById = tdFunction();
+        save = tdFunction();
+        when(propositionRepositoryFactory()).thenReturn({findOneById, save});
+    });
+    afterEach(() => reset());
 
     describe(`${incrementProposition}`, () => {
         test("Throw 'NotFoundException' if unknown 'Proposition.id'", async () => {
-            mockRepository("propositionRepositoryFactory", {findOneById: (id) => Promise.resolve(null)});
+            when(findOneById(matchers.anything())).thenResolve(null);
 
             await expect(incrementProposition("any", "unknown", "any")).rejects.toThrow(NotFoundException);
         });
@@ -20,17 +24,13 @@ describe("services/proposition.service", () => {
         test("New voter, should increment 'up' and save voter", async () => {
             const voter = "voter";
 
-            mockRepository("propositionRepositoryFactory", {
-                findOneById: (id) => Promise.resolve({
-                    down: 0,
-                    downVoters: [],
-                    up: 0,
-                    upVoters: [],
-                }),
-                save: (entity) => {
-                    // no action
-                },
+            when(findOneById(matchers.anything())).thenResolve({
+                down: 0,
+                downVoters: [],
+                up: 0,
+                upVoters: [],
             });
+            // when(save()).thenDo(nothing());
 
             const proposition = await incrementProposition("any", "any", voter);
 
@@ -43,17 +43,13 @@ describe("services/proposition.service", () => {
         test("When already voted, should reset 'up' and remove voter", async () => {
             const voter = "voter";
 
-            mockRepository("propositionRepositoryFactory", {
-                findOneById: (id) => Promise.resolve({
-                    down: 0,
-                    downVoters: [],
-                    up: 1,
-                    upVoters: [voter],
-                }),
-                save: (entity) => {
-                    // no action
-                },
+            when(findOneById(matchers.anything())).thenResolve({
+                down: 0,
+                downVoters: [],
+                up: 1,
+                upVoters: [voter],
             });
+            // when(save()).thenDo(nothing());
 
             const proposition = await incrementProposition("any", "any", voter);
 
@@ -66,17 +62,13 @@ describe("services/proposition.service", () => {
         test("When previously voted '-1', should change voteto '+1'", async () => {
             const voter = "voter";
 
-            mockRepository("propositionRepositoryFactory", {
-                findOneById: (id) => Promise.resolve({
-                    down: 1,
-                    downVoters: [voter],
-                    up: 0,
-                    upVoters: [],
-                }),
-                save: (entity) => {
-                    // no action
-                },
+            when(findOneById(matchers.anything())).thenResolve({
+                down: 1,
+                downVoters: [voter],
+                up: 0,
+                upVoters: [],
             });
+            // when(save()).thenDo(nothing());
 
             const proposition = await incrementProposition("any", "any", voter);
 
@@ -89,24 +81,21 @@ describe("services/proposition.service", () => {
 
     describe(`${decrementProposition}`, () => {
         test("Throw 'NotFoundException' if unknown 'Proposition.id'", async () => {
-            mockRepository("propositionRepositoryFactory", {findOneById: (id) => Promise.resolve(null)});
+            when(findOneById(matchers.anything())).thenResolve(null);
+
             await expect(decrementProposition("any", "unknown", "any")).rejects.toThrow(NotFoundException);
         });
 
         test("New voter, should decrement 'up' and save voter", async () => {
             const voter = "voter";
 
-            mockRepository("propositionRepositoryFactory", {
-                findOneById: (id) => Promise.resolve({
-                    down: 0,
-                    downVoters: [],
-                    up: 0,
-                    upVoters: [],
-                }),
-                save: (entity) => {
-                    // no action
-                },
+            when(findOneById(matchers.anything())).thenResolve({
+                down: 0,
+                downVoters: [],
+                up: 0,
+                upVoters: [],
             });
+            // when(save()).thenDo(nothing());
 
             const proposition = await decrementProposition("any", "any", voter);
 
@@ -119,17 +108,13 @@ describe("services/proposition.service", () => {
         test("When already voted, should reset 'up' and remove voter", async () => {
             const voter = "voter";
 
-            mockRepository("propositionRepositoryFactory", {
-                findOneById: (id) => Promise.resolve({
-                    down: 1,
-                    downVoters: [voter],
-                    up: 0,
-                    upVoters: [],
-                }),
-                save: (entity) => {
-                    // no action
-                },
+            when(findOneById(matchers.anything())).thenResolve({
+                down: 1,
+                downVoters: [voter],
+                up: 0,
+                upVoters: [],
             });
+            // when(save()).thenDo(nothing());
 
             const proposition = await decrementProposition("any", "any", voter);
 
@@ -142,17 +127,13 @@ describe("services/proposition.service", () => {
         test("When previously voted '-1', should change voteto '+1'", async () => {
             const voter = "voter";
 
-            mockRepository("propositionRepositoryFactory", {
-                findOneById: (id) => Promise.resolve({
-                    down: 0,
-                    downVoters: [],
-                    up: 1,
-                    upVoters: [voter],
-                }),
-                save: (entity) => {
-                    // no action
-                },
+            when(findOneById(matchers.anything())).thenResolve({
+                down: 0,
+                downVoters: [],
+                up: 1,
+                upVoters: [voter],
             });
+            // when(save()).thenDo(nothing());
 
             const proposition = await decrementProposition("any", "any", voter);
 
@@ -165,7 +146,7 @@ describe("services/proposition.service", () => {
 
     describe(`${deleteProposition}`, () => {
         test("Throw 'NotFoundException' if unknown 'Proposition.id'", async () => {
-            mockRepository("propositionRepositoryFactory", {findOneById: (id) => Promise.resolve(null)});
+            when(findOneById(matchers.anything())).thenResolve(null);
 
             await expect(deleteProposition("any", "unknown")).rejects.toThrow(NotFoundException);
         });

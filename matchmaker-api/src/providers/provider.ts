@@ -1,6 +1,6 @@
 import {Match, Message, Person} from "../dto";
-import TinderProvider from "./tinder/tinder-provider";
 import OnceProvider from "./once/once-provider";
+import TinderProvider from "./tinder/tinder-provider";
 
 // TODO "any" to "Credentials"
 export interface IProvider {

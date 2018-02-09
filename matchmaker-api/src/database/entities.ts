@@ -36,11 +36,9 @@ export class OnceCredentials {
 }
 
 class Credentials {
-    @IsDefined()
     @ValidateNested()
     public tinder?: TinderCredentials;
 
-    @IsDefined()
     @ValidateNested()
     public once?: OnceCredentials;
 }

@@ -1,7 +1,8 @@
 import {Application} from "express";
+import {createEmptySharedLink, deleteSharedLink, getMatchesByUser, getSharedLinks, updateSharedLinkMatches} from "./services/admin.service";
+import {login} from "./services/login.service";
 import {createProposition, decrementProposition, deleteProposition, getPropositions, incrementProposition} from "./services/proposition.service";
-import {getMatchesByUser, getMatchesByUserSharedLinkLink, getMessagesByMatch, getUser} from "./services/tinder.service";
-import {createEmptySharedLink, deleteSharedLink, getSharedLinks, login, updateSharedLinkMatches} from "./services/user.service";
+import {getMatchesByUserSharedLinkLink, getMessagesByMatch, getUser} from "./services/user.service";
 import {hashUser} from "./utils";
 
 export function registerRoutes(app: Application) {
@@ -31,5 +32,6 @@ export function registerRoutes(app: Application) {
     // click on "delete" button, in order to revoke a "shared link"
     app.delete("/sharedLinks/:sharedLinkLink", async (req, res) => res.json(await deleteSharedLink(req.headers.userid as string, req.params.sharedLinkLink)));
 
+    // Provider token management
     app.post("/login", async (req, res) => res.json(await login(req.body.token)));
 }

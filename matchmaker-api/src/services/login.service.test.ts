@@ -1,9 +1,8 @@
 import {replace, reset, when} from "testdouble";
-import {User} from "../database/entities";
 import {userRepositoryFactory} from "../database/repositories";
-import {mockDatabase} from "../testHelper";
 import * as tinder from "../providers/tinder/tinder-client";
-import {login} from "./user.service";
+import {mockDatabase} from "../testHelper";
+import {login} from "./login.service";
 
 describe("user.service", () => {
     mockDatabase();
@@ -22,11 +21,11 @@ describe("user.service", () => {
             const userId = await login(tinderToken);
 
             // User initialized
-            const createdUser: User = await userRepositoryFactory().findOneById(userId);
-            expect(createdUser.credentials.tinder!.token).toBe(tinderToken);
-            expect(createdUser.credentials.tinder!.userId).toBe(tinderUserId);
+            const createdUser = await userRepositoryFactory().findOneById(userId);
+            expect(createdUser!.credentials.tinder!.token).toBe(tinderToken);
+            expect(createdUser!.credentials.tinder!.userId).toBe(tinderUserId);
             // return
-            expect(userId).toEqual(createdUser.id);
+            expect(userId).toEqual(createdUser!.id.toHexString());
         });
 
         test("Already registered user: should refresh token", async () => {
@@ -45,9 +44,9 @@ describe("user.service", () => {
             const newUserId = await login(newTinderToken); // initialize
 
             // User refreshed
-            const updatedUser: User = await userRepositoryFactory().findOneById(newUserId);
-            expect(updatedUser.credentials.tinder!.token).toBe(newTinderToken);
-            expect(updatedUser.credentials.tinder!.userId).toBe(tinderUserId);
+            const updatedUser = await userRepositoryFactory().findOneById(newUserId);
+            expect(updatedUser!.credentials.tinder!.token).toBe(newTinderToken);
+            expect(updatedUser!.credentials.tinder!.userId).toBe(tinderUserId);
             // return
             expect(newUserId).toEqual(previousUserId);
         });

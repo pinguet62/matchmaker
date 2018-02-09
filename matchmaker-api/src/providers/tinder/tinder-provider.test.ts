@@ -1,7 +1,8 @@
+import {replace, reset, when} from "testdouble";
 import {calculateAge, formatJob} from "./tinder-provider";
 
-describe("tinder.service", () => {
-    afterEach(() => jest.restoreAllMocks());
+describe("providers/tinder/tinder-provider", () => {
+    afterEach(() => reset());
 
     test(`${calculateAge}`, () => {
         expect(formatJob({title: {name: "X"}})).toEqual("X");
@@ -11,8 +12,8 @@ describe("tinder.service", () => {
     });
 
     test(`${calculateAge}`, () => {
-        const now = new Date(2018, 2, 1, 18, 8).getTime();
-        jest.spyOn(Date, "now").mockImplementation(() => now);
+        const now = replace(Date, "now");
+        when(now()).thenReturn(new Date(2018, 2, 1, 18, 8).getTime());
 
         expect(calculateAge("1989-06-14T14:27:47.983Z")).toEqual(28);
     });

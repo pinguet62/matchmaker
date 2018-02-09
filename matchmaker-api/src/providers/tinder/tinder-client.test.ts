@@ -4,7 +4,7 @@ const token = "";
 const userId = "";
 const matchId = "";
 
-describe.skip("tinder", () => {
+describe.skip("providers/tinder/tinder-client", () => {
     test(`${getMeta}`, async () => {
         const result = await getMeta(token);
 

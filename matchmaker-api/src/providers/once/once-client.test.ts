@@ -3,7 +3,7 @@ import {getConnections, getMatch, getMessagesByMatch} from "./once-client";
 const authorization = "";
 const matchId = "";
 
-describe.skip("once", () => {
+describe.skip("providers/once/once-client", () => {
     test(`${getConnections}`, async () => {
         const result = await getConnections(authorization);
 
