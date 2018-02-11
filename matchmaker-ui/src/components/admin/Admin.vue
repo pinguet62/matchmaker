@@ -1,7 +1,7 @@
 <template>
   <div>
-    <login v-if="!$store.getters.isLogged"></login>
-    <logged v-if="$store.getters.isLogged"></logged>
+    <login v-if="!$store.getters.isLogged"/>
+    <logged v-if="$store.getters.isLogged"/>
   </div>
 </template>
 

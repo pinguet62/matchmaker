@@ -14,8 +14,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async login ({commit, state}, tinderToken) {
-      state.userId = (await axios.post(`${process.env.API_URL}/login`, {token: tinderToken})).data
+    async login ({commit, state}, {provider, secret}) {
+      state.userId = (await axios.post(`${process.env.API_URL}/login/${provider}`, {secret})).data
     }
   }
 })

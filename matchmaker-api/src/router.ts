@@ -1,6 +1,6 @@
 import {Application} from "express";
 import {createEmptySharedLink, deleteSharedLink, getMatchesByUser, getSharedLinks, updateSharedLinkMatches} from "./services/admin.service";
-import {login} from "./services/login.service";
+import {checkCredentials, login, registerCredentials} from "./services/login.service";
 import {createProposition, decrementProposition, deleteProposition, getPropositions, incrementProposition} from "./services/proposition.service";
 import {getMatchesByUserSharedLinkLink, getMessagesByMatch, getUser} from "./services/user.service";
 import {hashUser} from "./utils";
@@ -32,6 +32,8 @@ export function registerRoutes(app: Application) {
     // click on "delete" button, in order to revoke a "shared link"
     app.delete("/sharedLinks/:sharedLinkLink", async (req, res) => res.json(await deleteSharedLink(req.headers.userid as string, req.params.sharedLinkLink)));
 
-    // Provider token management
-    app.post("/login", async (req, res) => res.json(await login(req.body.token)));
+    // Provider secret management
+    app.post("/login/:provider", async (req, res) => res.json(await login(req.params.provider, req.body.secret)));
+    app.put("/login/:provider", async (req, res) => res.json(await registerCredentials(req.headers.userid as string, req.params.provider, req.body.secret)));
+    app.get("/login/status", async (req, res) => res.json(await checkCredentials(req.headers.userid as string)));
 }

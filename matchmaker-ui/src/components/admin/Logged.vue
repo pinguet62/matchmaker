@@ -1,33 +1,14 @@
 <template>
   <div>
     <div style="text-align: center;">
-      <v-btn color="error" @click="$router.push('/')">
+      <v-btn color="error" @click="logout">
         <v-icon left>exit_to_app</v-icon>
         Logout
       </v-btn>
     </div>
 
     <div>
-      <div>
-        <v-btn disabled>
-          <v-avatar size="24px">
-            <img class="icon" src="https://lh3.googleusercontent.com/stlBGKS482zWajOTk82IXFZhr22hk_NQewNOAJ0IeptPO73qfNesCyfNwW1-xwBiwv0=w300-rw">
-          </v-avatar>
-          Add Tinder account
-        </v-btn>
-        <v-btn disabled>
-          <v-avatar size="24px">
-            <img class="icon" src="https://lh3.googleusercontent.com/ChCmJuIViKo210sbmQRORBrWa9E1YbjgKPbsJ-vxBn74ecufJ7OEnYnn2fnEA6RgPY4=w300-rw">
-          </v-avatar>
-          Add Happn account
-        </v-btn>
-        <v-btn disabled>
-          <v-avatar size="24px">
-            <img class="icon" src="https://lh3.googleusercontent.com/epJw-VIvHwumTY73TUGTnwy1hSaWXmxCnQ_0x28_lXjWrcPj9Qv-Xu7YYJbbryfO5Q=w300">
-          </v-avatar>
-          Add Once account
-        </v-btn>
-      </div>
+      <provider-register/>
 
       <div style="display: flex; align-items: center;">
         <v-btn icon color="pink" dark @click="onCreateSharedLink()">
@@ -85,9 +66,11 @@
 
 <script>
   import axios from 'axios'
+  import ProviderRegister from './ProviderRegister'
 
   export default {
     name: 'Logged',
+    components: {ProviderRegister},
     data () {
       return {
         window: window,
@@ -97,11 +80,15 @@
         matches: []
       }
     },
-    async created () {
-      await this.loadMatches()
-      await this.loadSharedLinks()
+    created () {
+      this.loadMatches() // await
+      this.loadSharedLinks() // await
     },
     methods: {
+      async logout () {
+        this.$router.push('/')
+        this.$store.state.userId = null
+      },
       async loadMatches () {
         this.matches = (await axios.get(`${process.env.API_URL}/matches`, {headers: {userId: this.userId}})).data
       },

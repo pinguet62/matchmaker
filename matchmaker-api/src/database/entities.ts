@@ -35,7 +35,7 @@ export class OnceCredentials {
     public authorization: string;
 }
 
-class Credentials {
+export class Credentials {
     @ValidateNested()
     public tinder?: TinderCredentials;
 

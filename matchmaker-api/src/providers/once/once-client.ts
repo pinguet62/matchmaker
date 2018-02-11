@@ -86,3 +86,14 @@ export async function getMessagesByMatch(authorization: string, matchId: string)
         url: `https://onceapi.com/v1/messages?match_id=${matchId}`,
     }).then((x) => x.result.messages);
 }
+
+export async function getMe(authorization: string): Promise<IUserDto> {
+    return await request({
+        headers: {
+            authorization,
+        },
+        json: true,
+        method: "GET",
+        url: `https://onceapi.com/v1/user/me`,
+    }).then((x) => x.result.user);
+}

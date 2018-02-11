@@ -12,12 +12,18 @@ export interface IProvider {
 }
 
 export function getProvider(provider: string): IProvider {
-    switch (provider) {
+    switch (provider) { // TODO Factory interface
         case  "tinder":
             return new TinderProvider();
         case  "once":
             return new OnceProvider();
         default:
             throw new Error(`Unknown provider ${provider}`);
+    }
+}
+
+export class UnsupportedProviderError extends Error {
+    constructor(private provider: string) {
+        super();
     }
 }
