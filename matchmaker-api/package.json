@@ -4,8 +4,8 @@
   "scripts": {
     "lint": "tslint --config tslint.json --project tsconfig.json && tsc",
     "test": "jest --colors",
-    "dev": "nodemon --legacy-watch --watch src/**/*.ts --ext ts --exec ts-node src/server.ts",
-    "start": "ts-node src/server.ts"
+    "dev": "nodemon --legacy-watch --watch src/**/*.ts --ext ts --exec ts-node src/starter.ts",
+    "start": "ts-node src/starter.ts"
   },
   "dependencies": {
     "body-parser": "^1.18.2",

@@ -1,9 +1,11 @@
+import {Server} from "http";
 import {MongodHelper} from "mongodb-prebuilt";
 import {tmpdir} from "os";
-import {replace, reset} from "testdouble";
+import {replace} from "testdouble";
 import {connect, disconnect} from "./database/connection";
+import {startServer} from "./server";
 
-export function mockDatabase() {
+export function mockDatabaseForEach() {
     let helper: MongodHelper;
 
     beforeAll(async () => {
@@ -18,7 +20,13 @@ export function mockDatabase() {
     afterAll(async () => {
         await disconnect();
         helper.mongoBin.childProcess.kill();
-
-        afterEach(() => reset());
     });
 }
+
+export function startServerForEach() {
+    let server: Server;
+    beforeEach(() => server = startServer());
+    afterEach(() => server.close());
+}
+
+export const BASE_URL = `http://localhost:${process.env.PORT || 8081}`;

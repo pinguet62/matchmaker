@@ -4,12 +4,12 @@ import * as repositories from "../database/repositories";
 import {userRepositoryFactory} from "../database/repositories";
 import {NotFoundException} from "../exceptions";
 import * as tinder from "../providers/tinder/tinder-client";
-import {mockDatabase} from "../testHelper";
+import {mockDatabaseForEach} from "../testHelper";
 import {checkCredentials, login, registerCredentials, registerTinderCredentials, Status} from "./login.service";
 
 describe("services/login.service", () => {
     describe(`${login}`, () => {
-        mockDatabase();
+        mockDatabaseForEach();
 
         test("First login: should initialize User and credentials", async () => {
             expect(await userRepositoryFactory().count()).toEqual(0); // first login
