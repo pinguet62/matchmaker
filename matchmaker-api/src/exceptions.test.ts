@@ -1,13 +1,16 @@
 import {Application} from "express";
 import * as request from "request-promise";
-import {replace, reset} from "testdouble";
+import {createSandbox} from "sinon";
 import {NotFoundException, UnauthorizedException, ValidationError} from "./exceptions";
 import * as router from "./router";
 import {BASE_URL, startServerForEach} from "./testHelper";
 
 describe("exceptions", () => {
+    const sinon = createSandbox();
+    afterEach(() => sinon.restore());
+
     beforeEach(() => {
-        replace(router, "registerRoutes", (app: Application) => {
+        sinon.stub(router, "registerRoutes").callsFake((app: Application) => {
             app.get("/unauthorized", () => {
                 throw new UnauthorizedException();
             });
@@ -22,8 +25,8 @@ describe("exceptions", () => {
             });
         });
     });
+
     startServerForEach();
-    afterEach(() => reset());
 
     test(`Should return 401 if '${UnauthorizedException.name}' thrown`, async () => {
         let error;

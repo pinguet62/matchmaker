@@ -1,8 +1,9 @@
-import {replace, reset, when} from "testdouble";
+import {createSandbox} from "sinon";
 import {calculateAge, formatJob} from "./tinder-provider";
 
 describe("providers/tinder/tinder-provider", () => {
-    afterEach(() => reset());
+    const sinon = createSandbox();
+    afterEach(() => sinon.restore());
 
     test(`${calculateAge}`, () => {
         expect(formatJob({title: {name: "X"}})).toEqual("X");
@@ -12,8 +13,7 @@ describe("providers/tinder/tinder-provider", () => {
     });
 
     test(`${calculateAge}`, () => {
-        const now = replace(Date, "now");
-        when(now()).thenReturn(new Date(2018, 2, 1, 18, 8).getTime());
+        sinon.stub(Date, "now").returns(new Date(2018, 2, 1, 18, 8).getTime());
 
         expect(calculateAge("1989-06-14T14:27:47.983Z")).toEqual(28);
     });
