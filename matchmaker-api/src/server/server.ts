@@ -3,16 +3,16 @@ import * as cors from "cors";
 import * as express from "express";
 import {Application} from "express";
 import {Server} from "http";
-import {exceptionHandler} from "./exceptions";
-import {registerRoutes} from "./router";
+import exceptionMiddleware from "./exceptionMiddleware";
+import router from "./router";
 
 export function startServer(): Server {
     const app: Application = express();
 
     app.use(cors());
     app.use(json());
-    registerRoutes(app);
-    app.use(exceptionHandler);
+    app.use(router);
+    app.use(exceptionMiddleware);
 
     return app.listen((process.env.PORT || 8081) as number);
 }

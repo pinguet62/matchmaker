@@ -1,5 +1,6 @@
 import {OnceCredentials, TinderCredentials, User} from "../database/entities";
 import {userRepositoryFactory} from "../database/repositories";
+import {CredentialStatus, Status} from "../dto";
 import {NotFoundException} from "../exceptions";
 import {getMe} from "../providers/once/once-client";
 import {UnsupportedProviderError} from "../providers/provider";
@@ -16,15 +17,14 @@ export async function login(provider: string, tinderToken: string): Promise<stri
     // create account if not exists
     if (!user) {
         user = new User();
-        user.credentials.tinder = new TinderCredentials();
-        user.credentials.tinder.userId = tinderUserId;
+        user.credentials.tinder = new TinderCredentials(tinderUserId, tinderToken);
     }
     // refresh token
     user.credentials.tinder!.token = tinderToken;
 
     await userRepositoryFactory().save(user);
 
-    return user.id.toHexString();
+    return user.id!.toHexString();
 }
 
 export async function registerCredentials(userId: string, provider: string, secret: any) {
@@ -46,12 +46,12 @@ export async function registerTinderCredentials(userId: string, tinderToken: str
     }
 
     if (!user.credentials.tinder) {
-        user.credentials.tinder = new TinderCredentials();
-        user.credentials.tinder.userId = await getMeta(tinderToken).then((x) => x.user._id);
+        const tinderUserId = await getMeta(tinderToken).then((x) => x.user._id);
+        user.credentials.tinder = new TinderCredentials(tinderUserId, tinderToken);
     }
     user.credentials.tinder.token = tinderToken;
 
-    userRepositoryFactory().save(user);
+    await userRepositoryFactory().save(user);
 }
 
 /** Initialize {@link Credentials#once}. */
@@ -62,21 +62,13 @@ export async function registerOnceCredentials(userId: string, onceAuthorization:
     }
 
     if (!user.credentials.once) {
-        user.credentials.once = new OnceCredentials();
-        user.credentials.once.userId = await getMe(onceAuthorization).then((x) => x.id);
+        const onceUserId = await getMe(onceAuthorization).then((x) => x.id);
+        user.credentials.once = new OnceCredentials(onceUserId, onceAuthorization);
     }
     user.credentials.once.authorization = onceAuthorization;
 
-    userRepositoryFactory().save(user);
+    await userRepositoryFactory().save(user);
 }
-
-export enum Status {
-    NOT_REGISTERED = "not_registered",
-    EXPIRED = "expired",
-    UP_TO_DATE = "up_to_date",
-}
-
-type CredentialStatus = ({ [provider: string]: Status });
 
 export async function checkCredentials(userId: string): Promise<CredentialStatus> {
     const user = await userRepositoryFactory().findOneById(userId);

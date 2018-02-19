@@ -1,5 +1,5 @@
 import {TinderCredentials} from "../../database/entities";
-import {Match, Message, Person} from "../../dto";
+import {IMatch, IMessage, IPerson} from "../../dto";
 import {IProvider} from "../provider";
 import * as tinderClient from "./tinder-client";
 import {IJobDto} from "./tinder-client";
@@ -21,7 +21,7 @@ export function calculateAge(birthDate: string) {
 }
 
 export default class TinderProvider implements IProvider {
-    public getMatches(credentials: TinderCredentials): Promise<Match[]> {
+    public getMatches(credentials: TinderCredentials): Promise<IMatch[]> {
         return tinderClient.getMatches(credentials.token)
             .then((x) => x.map((it) => {
                 return {
@@ -38,7 +38,7 @@ export default class TinderProvider implements IProvider {
             }));
     }
 
-    public getProfile(credentials: TinderCredentials, tinderUserId: string): Promise<Person> {
+    public getProfile(credentials: TinderCredentials, tinderUserId: string): Promise<IPerson> {
         return tinderClient.getUser(credentials.token, tinderUserId)
             .then((it) => {
                 return {
@@ -54,7 +54,7 @@ export default class TinderProvider implements IProvider {
             });
     }
 
-    public getMessagesByProfile(credentials: TinderCredentials, matchId: string): Promise<Message[]> {
+    public getMessagesByProfile(credentials: TinderCredentials, matchId: string): Promise<IMessage[]> {
         return tinderClient.getMessagesByMatch(credentials.token, matchId)
             .then((x) => x.map((it) => {
                     return {

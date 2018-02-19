@@ -1,11 +1,11 @@
 import {resolve} from "url";
 import {OnceCredentials} from "../../database/entities";
-import {Match, Message, Person} from "../../dto";
+import {IMatch, IMessage, IPerson} from "../../dto";
 import {IProvider} from "../provider";
 import {getConnections, getMatch, getMessagesByMatch} from "./once-client";
 
 export default class OnceProvider implements IProvider {
-    public getMatches(credentials: OnceCredentials): Promise<Match[]> {
+    public getMatches(credentials: OnceCredentials): Promise<IMatch[]> {
         return getConnections(credentials.authorization)
             .then((x) => {
                 return x.connections.map((it) => {
@@ -24,7 +24,7 @@ export default class OnceProvider implements IProvider {
             });
     }
 
-    public getProfile(credentials: OnceCredentials, matchId: string): Promise<Person> {
+    public getProfile(credentials: OnceCredentials, matchId: string): Promise<IPerson> {
         return getMatch(credentials.authorization, matchId)
             .then((it) => {
                 return {
@@ -40,7 +40,7 @@ export default class OnceProvider implements IProvider {
             });
     }
 
-    public getMessagesByProfile(credentials: OnceCredentials, profileId: string): Promise<Message[]> {
+    public getMessagesByProfile(credentials: OnceCredentials, profileId: string): Promise<IMessage[]> {
         return getMessagesByMatch(credentials.authorization, profileId)
             .then((x) => x.map((it) => {
                     return {

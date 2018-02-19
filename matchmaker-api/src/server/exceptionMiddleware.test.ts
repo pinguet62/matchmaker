@@ -1,29 +1,29 @@
-import {Application} from "express";
+import {Router} from "express";
 import * as request from "request-promise";
 import {createSandbox} from "sinon";
-import {NotFoundException, UnauthorizedException, ValidationError} from "./exceptions";
+import {NotFoundException, UnauthorizedException, ValidationError} from "../exceptions";
+import {BASE_URL, startServerForEach} from "../testHelper";
 import * as router from "./router";
-import {BASE_URL, startServerForEach} from "./testHelper";
 
 describe("exceptions", () => {
     const sinon = createSandbox();
     afterEach(() => sinon.restore());
 
     beforeEach(() => {
-        sinon.stub(router, "registerRoutes").callsFake((app: Application) => {
-            app.get("/unauthorized", () => {
-                throw new UnauthorizedException();
-            });
-            app.get("/not_found", () => {
-                throw new NotFoundException();
-            });
-            app.get("/unprocessable_entity", () => {
-                throw new ValidationError();
-            });
-            app.get("/internal_server_error", () => {
-                throw new Error();
-            });
+        const routerStub = Router();
+        routerStub.get("/unauthorized", () => {
+            throw new UnauthorizedException();
         });
+        routerStub.get("/not_found", () => {
+            throw new NotFoundException();
+        });
+        routerStub.get("/unprocessable_entity", () => {
+            throw new ValidationError();
+        });
+        routerStub.get("/internal_server_error", () => {
+            throw new Error();
+        });
+        sinon.stub(router, "default").value(routerStub);
     });
 
     startServerForEach();

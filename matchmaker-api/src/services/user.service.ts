@@ -1,9 +1,9 @@
 import {userRepositoryFactory} from "../database/repositories";
-import {Match, Message, Person} from "../dto";
+import {IMatch, IMessage, IPerson} from "../dto";
 import {NotFoundException} from "../exceptions";
 import {getProvider} from "../providers/provider";
 
-export async function getMatchesByUserSharedLinkLink(sharedLinkLink: string): Promise<Match[]> {
+export async function getMatchesByUserSharedLinkLink(sharedLinkLink: string): Promise<IMatch[]> {
     const user = await userRepositoryFactory().findOneBySharedLinkLink(sharedLinkLink);
     if (!user) {
         throw new NotFoundException();
@@ -18,7 +18,7 @@ export async function getMatchesByUserSharedLinkLink(sharedLinkLink: string): Pr
     return matches.filter((it) => sharedLink.matchIds.includes(it.id)); // right restriction
 }
 
-export async function getMessagesByMatch(sharedLinkLink: string, matchId: string): Promise<Message[]> {
+export async function getMessagesByMatch(sharedLinkLink: string, matchId: string): Promise<IMessage[]> {
     const user = await userRepositoryFactory().findOneBySharedLinkLink(sharedLinkLink);
     if (!user) {
         throw new NotFoundException();
@@ -27,7 +27,7 @@ export async function getMessagesByMatch(sharedLinkLink: string, matchId: string
     return getProvider("tinder").getMessagesByProfile(user.credentials.tinder, matchId);
 }
 
-export async function getUser(sharedLinkLink: string, tinderUserOrMatchId: string): Promise<Person> {
+export async function getUser(sharedLinkLink: string, tinderUserOrMatchId: string): Promise<IPerson> {
     const user = await userRepositoryFactory().findOneBySharedLinkLink(sharedLinkLink);
     if (!user) {
         throw new NotFoundException();

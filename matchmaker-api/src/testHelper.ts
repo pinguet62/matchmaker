@@ -4,7 +4,7 @@ import {tmpdir} from "os";
 import {createSandbox, SinonStub} from "sinon";
 import {connect, disconnect} from "./database/connection";
 import * as repositories from "./database/repositories";
-import {startServer} from "./server";
+import {startServer} from "./server/server";
 
 export function mockDatabaseForEach() {
     const sinon = createSandbox();

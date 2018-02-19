@@ -5,7 +5,7 @@ import EmptyRouterView from '@/components/layout/EmptyRouterView'
 import Home from '@/components/Home'
 import Admin from '@/components/admin/Admin'
 import LinkSelection from '@/components/user/LinkSelection'
-import Matchs from '@/components/user/Matchs'
+import Matches from '@/components/user/Matches'
 import Match from '@/components/user/Match'
 
 Vue.use(Router)
@@ -30,8 +30,8 @@ export default new Router({
         },
         {
           path: ':sharedLinkLink',
-          name: 'Matchs',
-          component: Matchs,
+          name: 'Matches',
+          component: Matches,
           children: [
             {
               path: '',

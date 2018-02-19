@@ -1,25 +1,23 @@
 import {SharedLink} from "../database/entities";
 import {userRepositoryFactory} from "../database/repositories";
-import {Match} from "../dto";
+import {IMatch, ISharedLink} from "../dto";
 import {NotFoundException} from "../exceptions";
 import {getProvider} from "../providers/provider";
 
-export async function createEmptySharedLink(userId: string): Promise<SharedLink> {
+export async function createEmptySharedLink(userId: string): Promise<ISharedLink> {
     const user = await userRepositoryFactory().findOneById(userId);
     if (!user) {
         throw new NotFoundException();
     }
 
-    const sharedLink = new SharedLink();
-    sharedLink.link = Date.now().toString();
-
+    const sharedLink = new SharedLink(Date.now().toString());
     user.sharedLinks.push(sharedLink);
     await userRepositoryFactory().save(user);
 
     return sharedLink;
 }
 
-export async function deleteSharedLink(userId: string, sharedLinkLink: string): Promise<SharedLink> {
+export async function deleteSharedLink(userId: string, sharedLinkLink: string): Promise<ISharedLink> {
     const user = await userRepositoryFactory().findOneById(userId);
     if (!user) {
         throw new NotFoundException();
@@ -38,7 +36,7 @@ export async function deleteSharedLink(userId: string, sharedLinkLink: string): 
     return sharedLink;
 }
 
-export async function getMatchesByUser(userId: string): Promise<Match[]> {
+export async function getMatchesByUser(userId: string): Promise<IMatch[]> {
     const user = await userRepositoryFactory().findOneById(userId);
     if (!user) {
         throw new NotFoundException();
@@ -47,7 +45,7 @@ export async function getMatchesByUser(userId: string): Promise<Match[]> {
     return getProvider("tinder").getMatches(user.credentials.tinder);
 }
 
-export async function getSharedLinks(userId: string): Promise<SharedLink[]> {
+export async function getSharedLinks(userId: string): Promise<ISharedLink[]> {
     const user = await userRepositoryFactory().findOneById(userId);
     if (!user) {
         throw new NotFoundException();
@@ -55,7 +53,7 @@ export async function getSharedLinks(userId: string): Promise<SharedLink[]> {
     return user.sharedLinks;
 }
 
-export async function updateSharedLinkMatches(userId: string, sharedLinkLink: string, matchIds: string[]): Promise<SharedLink> {
+export async function updateSharedLinkMatches(userId: string, sharedLinkLink: string, matchIds: string[]): Promise<ISharedLink> {
     const user = await userRepositoryFactory().findOneById(userId);
     if (!user) {
         throw new NotFoundException();

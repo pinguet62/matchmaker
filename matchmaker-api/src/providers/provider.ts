@@ -1,14 +1,14 @@
-import {Match, Message, Person} from "../dto";
+import {IMatch, IMessage, IPerson} from "../dto";
 import OnceProvider from "./once/once-provider";
 import TinderProvider from "./tinder/tinder-provider";
 
 // TODO "any" to "Credentials"
 export interface IProvider {
-    getMatches(credentials: any): Promise<Match[]>;
+    getMatches(credentials: any): Promise<IMatch[]>;
 
-    getProfile(credentials: any, personId: string): Promise<Person>;
+    getProfile(credentials: any, personId: string): Promise<IPerson>;
 
-    getMessagesByProfile(credentials: any, profileId: string): Promise<Message[]>;
+    getMessagesByProfile(credentials: any, profileId: string): Promise<IMessage[]>;
 }
 
 export function getProvider(provider: string): IProvider {

@@ -1,11 +1,29 @@
-export interface Message {
-    sent: boolean;
-    received: boolean;
-    date: Date;
-    text: string;
+export interface ISharedLink {
+    link: string;
+    matchIds: string[];
 }
 
-export interface Person {
+export enum Status {
+    NOT_REGISTERED = "not_registered",
+    EXPIRED = "expired",
+    UP_TO_DATE = "up_to_date",
+}
+
+export type CredentialStatus = ({ [provider: string]: Status });
+
+export interface IMatch {
+    id: string;
+    lastMessage?: {
+        sent: boolean;
+        text: string;
+    };
+    person: {
+        name: string,
+        photo?: string;
+    };
+}
+
+export interface IPerson {
     id: string;
     name: string;
     age: number;
@@ -16,14 +34,16 @@ export interface Person {
     jobs: string[];
 }
 
-export interface Match {
+export interface IMessage {
+    sent: boolean;
+    received: boolean;
+    date: Date;
+    text: string;
+}
+
+export interface IProposition {
     id: string;
-    lastMessage?: {
-        sent: boolean;
-        text: string;
-    };
-    person: {
-        name: string,
-        photo?: string;
-    };
+    message: string;
+    up: number;
+    down: number;
 }

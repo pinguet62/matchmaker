@@ -10,10 +10,10 @@ export class SharedLink {
 
     @Column()
     @IsNotEmpty({each: true})
-    public matchIds: string[];
+    public matchIds: string[] = [];
 
-    constructor() {
-        this.matchIds = [];
+    constructor(link: string) {
+        this.link = link;
     }
 }
 
@@ -24,6 +24,11 @@ export class TinderCredentials {
     @Column()
     @IsNotEmpty()
     public token: string;
+
+    constructor(userId: string, token: string) {
+        this.userId = userId;
+        this.token = token;
+    }
 }
 
 export class OnceCredentials {
@@ -33,6 +38,11 @@ export class OnceCredentials {
     @Column()
     @IsNotEmpty()
     public authorization: string;
+
+    constructor(userId: string, authorization: string) {
+        this.userId = userId;
+        this.authorization = authorization;
+    }
 }
 
 export class Credentials {
@@ -48,22 +58,18 @@ export class User {
     @ObjectIdColumn()
     @IsOptional()
     @IsInstance(ObjectID) // @IsMongoId()
-    public id: ObjectID;
+    public id?: ObjectID;
 
     @Column()
     @IsDefined()
     @ValidateNested()
     public credentials: Credentials = new Credentials();
 
-    @Column((type: any) => SharedLink)
+    @Column(() => SharedLink)
     @IsArray()
     @IsInstance(SharedLink, {each: true})
     @ValidateNested()
-    public sharedLinks: SharedLink[];
-
-    constructor() {
-        this.sharedLinks = [];
-    }
+    public sharedLinks: SharedLink[] = [];
 }
 
 @Entity()
@@ -71,7 +77,7 @@ export class Proposition {
     @ObjectIdColumn()
     @IsOptional()
     @IsInstance(ObjectID) // @IsMongoId()
-    public id: ObjectID;
+    public id?: ObjectID;
 
     @Column()
     @IsDefined()
@@ -89,7 +95,7 @@ export class Proposition {
 
     @Column()
     @IsNotEmpty({each: true})
-    public upVoters: string[];
+    public upVoters: string[] = [];
 
     @Column()
     @IsInt()
@@ -98,10 +104,10 @@ export class Proposition {
 
     @Column()
     @IsNotEmpty({each: true})
-    public downVoters: string[];
+    public downVoters: string[] = [];
 
-    constructor() {
-        this.upVoters = [];
-        this.downVoters = [];
+    constructor(match: string, message: string) {
+        this.match = match;
+        this.message = message;
     }
 }

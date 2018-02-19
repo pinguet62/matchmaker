@@ -3,10 +3,7 @@ import {propositionRepositoryFactory} from "../database/repositories";
 import {NotFoundException} from "../exceptions";
 
 export async function createProposition(matchId: string, message: string): Promise<Proposition> {
-    const entity = new Proposition();
-    entity.match = matchId;
-    entity.message = message;
-
+    const entity = new Proposition(matchId, message);
     return propositionRepositoryFactory().save(entity);
 }
 
@@ -31,9 +28,7 @@ export async function decrementProposition(matchId: string, propositionId: strin
         proposition.down = proposition.down + 1;
     }
 
-    await propositionRepositoryFactory().save(proposition);
-
-    return proposition;
+    return propositionRepositoryFactory().save(proposition);
 }
 
 export async function deleteProposition(matchId: string, propositionId: string): Promise<Proposition> {
@@ -42,9 +37,7 @@ export async function deleteProposition(matchId: string, propositionId: string):
         throw new NotFoundException();
     }
 
-    await propositionRepositoryFactory().remove(proposition);
-
-    return proposition;
+    return propositionRepositoryFactory().remove(proposition);
 }
 
 export async function getPropositions(matchId: string): Promise<Proposition[]> {
@@ -72,7 +65,5 @@ export async function incrementProposition(matchId: string, propositionId: strin
         proposition.up = proposition.up + 1;
     }
 
-    await propositionRepositoryFactory().save(proposition);
-
-    return proposition;
+    return propositionRepositoryFactory().save(proposition);
 }

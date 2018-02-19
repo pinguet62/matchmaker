@@ -1,9 +1,10 @@
 import {createSandbox, match} from "sinon";
 import {userRepositoryFactory} from "../database/repositories";
+import {Status} from "../dto";
 import {NotFoundException} from "../exceptions";
 import * as tinder from "../providers/tinder/tinder-client";
 import {mockDatabaseForEach, stubRepositoryForEach} from "../testHelper";
-import {checkCredentials, login, registerCredentials, registerTinderCredentials, Status} from "./login.service";
+import {checkCredentials, login, registerCredentials, registerTinderCredentials} from "./login.service";
 
 describe("services/login.service", () => {
     const sinon = createSandbox();
@@ -28,7 +29,7 @@ describe("services/login.service", () => {
             expect(createdUser!.credentials.tinder!.token).toBe(tinderToken);
             expect(createdUser!.credentials.tinder!.userId).toBe(tinderUserId);
             // return
-            expect(userId).toEqual(createdUser!.id.toHexString());
+            expect(userId).toEqual(createdUser!.id!.toHexString());
         });
 
         test("Existing user with provider already registered: should refresh secret", async () => {

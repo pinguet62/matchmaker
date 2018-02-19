@@ -35,7 +35,7 @@
   import axios from 'axios'
 
   export default {
-    name: 'Matchs',
+    name: 'Matches',
     data () {
       return {
         navigationDrawerOpen: true,
