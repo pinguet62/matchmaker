@@ -9,21 +9,20 @@ export interface IConnectionDto {
     user: IUserDto;
     match_id: string; // "MEAxxxxxxxxx"
     sender_id: string; // IUser.id
-    receiver_id: string; // IUser.id
     last_message: string; // default: "Vous avez été connectés"
     last_message_id: number; // default: 0
     message_sent_at: number;
 }
 
 export interface IUserDto {
-    id: string;
+    id: string; // "EAxxxxxx"
     first_name: string;
     age: number;
     description?: string;
     pictures: IPictureDto[];
     occupation: {
-        employer?: string, // TODO test
-        position?: string,
+        employer: string | null,
+        position: string | null,
     };
     education: Array<{
         school_type: string,
@@ -40,7 +39,6 @@ export interface IMessage {
     id: string; // `${matchId}::${number}`
     number: number;
     sender_id: string;
-    receiver_id: string;
     message: string;
     created_at: number;
 }

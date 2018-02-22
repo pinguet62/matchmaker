@@ -1,23 +1,27 @@
-import {resolve} from "url";
 import {OnceCredentials} from "../../database/entities";
 import {IMatch, IMessage, IPerson} from "../../dto";
 import {IProvider} from "../provider";
-import {getConnections, getMatch, getMessagesByMatch} from "./once-client";
+import {formatProviderId} from "../providerUtils";
+import {getConnections, getMatch, getMe, getMessagesByMatch} from "./once-client";
 
 export default class OnceProvider implements IProvider {
+    public getUserId(secret: string): Promise<string> {
+        return getMe(secret).then((x) => x.id);
+    }
+
     public getMatches(credentials: OnceCredentials): Promise<IMatch[]> {
         return getConnections(credentials.authorization)
             .then((x) => {
                 return x.connections.map((it) => {
                     return {
-                        id: it.match_id,
+                        id: formatProviderId({provider: "once", id: it.match_id}),
                         lastMessage: it.last_message_id === 0 ? undefined : {
                             sent: credentials.userId === it.sender_id,
                             text: it.last_message,
                         },
                         person: {
                             name: it.user.first_name,
-                            photo: resolve(x.base_url, it.user.pictures[0].original),
+                            photo: x.base_url + "/" + it.match_id + "/" + it.user.pictures[0].original,
                         },
                     };
                 });

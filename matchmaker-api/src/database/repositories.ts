@@ -14,10 +14,10 @@ export class UserRepository extends MongoRepository<User> {
     /**
      * @param tinderUserId {@link User#tinderUserId}
      */
-    public async findOneByCredentialsTinderUserId(tinderUserId: string): Promise<User | undefined> {
+    public async findOneByCredentialUserId(provider: string, providerUserId: string): Promise<User | undefined> {
         // TODO query
         for (const user of await super.find()) {
-            if (user.credentials.tinder && user.credentials.tinder.userId === tinderUserId) {
+            if ((user.credentials as any)[provider] && (user.credentials as any)[provider].userId === providerUserId) {
                 return user;
             }
         }

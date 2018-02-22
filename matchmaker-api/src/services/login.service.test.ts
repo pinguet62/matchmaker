@@ -61,7 +61,7 @@ describe("services/login.service", () => {
 
         test("Throw 'NotFoundException' if unknown User", async () => {
             const userId = "unknown";
-            userRepositoryFactoryStub.findOneById.withArgs(userId).resolves(null);
+            userRepositoryFactoryStub().findOneById.withArgs(userId).resolves(null);
 
             await expect(registerCredentials(userId, "tinder", "any")).rejects.toThrow(NotFoundException);
         });
@@ -71,7 +71,7 @@ describe("services/login.service", () => {
                 const userId = "userId";
                 const secret = "secret";
 
-                userRepositoryFactoryStub.findOneById.withArgs(userId).resolves({
+                userRepositoryFactoryStub().findOneById.withArgs(userId).resolves({
                     credentials: {
                         once: {userId: "onceUserId", authorization: "onceAuthorization"},
                         // tinder: undefined
@@ -82,7 +82,7 @@ describe("services/login.service", () => {
 
                 await registerCredentials(userId, "tinder", secret);
 
-                expect(userRepositoryFactoryStub.save.withArgs(match.any).called).toBe(true); // TODO
+                expect(userRepositoryFactoryStub().save.withArgs(match.any).called).toBe(true); // TODO
                 // x.credentials!.tinder!.userId === tinderUserId
                 // x.credentials!.tinder!.token === secret
             });
@@ -91,7 +91,7 @@ describe("services/login.service", () => {
                 const userId = "userId";
                 const secret = "secret";
 
-                userRepositoryFactoryStub.findOneById.withArgs(userId).resolves({
+                userRepositoryFactoryStub().findOneById.withArgs(userId).resolves({
                     credentials: {
                         once: {userId: "onceUserId", authorization: "onceAuthorization"},
                         tinder: {userId: "tinderUserId", token: "tinderInitialToken"},
@@ -102,7 +102,7 @@ describe("services/login.service", () => {
 
                 await registerCredentials(userId, "tinder", secret);
 
-                expect(userRepositoryFactoryStub.save.withArgs(match.any).called).toBe(true); // TODO
+                expect(userRepositoryFactoryStub().save.withArgs(match.any).called).toBe(true); // TODO
                 // x.credentials!.tinder!.userId === tinderUserId
                 // x.credentials!.tinder!.token === secret
             });
@@ -115,12 +115,12 @@ describe("services/login.service", () => {
         test(`Should return '${Status.UP_TO_DATE}' if success`, async () => {
             const userId = "userId";
             const tinderToken = "tinderToken";
-            userRepositoryFactoryStub.findOneById.withArgs(userId).resolves({
+            userRepositoryFactoryStub().findOneById.withArgs(userId).resolves({
                 credentials: {
                     tinder: {token: tinderToken},
                 },
             });
-            sinon.stub(tinder, "getMeta").withArgs(tinderToken).resolves({});
+            sinon.stub(tinder, "getMatches").withArgs(tinderToken).resolves([]);
 
             const status = await checkCredentials(userId);
 
@@ -130,12 +130,12 @@ describe("services/login.service", () => {
         test(`Should return '${Status.EXPIRED}' if unauthorized`, async () => {
             const userId = "userId";
             const tinderToken = "tinderToken";
-            userRepositoryFactoryStub.findOneById.withArgs(userId).resolves({
+            userRepositoryFactoryStub().findOneById.withArgs(userId).resolves({
                 credentials: {
                     tinder: {token: tinderToken},
                 },
             });
-            sinon.stub(tinder, "getMeta").withArgs(tinderToken).rejects(new Error("401 Unauthorized"));
+            sinon.stub(tinder, "getMatches").withArgs(tinderToken).rejects(new Error("401 Unauthorized"));
 
             const status = await checkCredentials(userId);
 
@@ -144,7 +144,7 @@ describe("services/login.service", () => {
 
         test(`Should return '${Status.NOT_REGISTERED}' if provider not registered`, async () => {
             const userId = "userId";
-            userRepositoryFactoryStub.findOneById.withArgs(userId).resolves({
+            userRepositoryFactoryStub().findOneById.withArgs(userId).resolves({
                 credentials: {
                     // tinder: undefined
                 },

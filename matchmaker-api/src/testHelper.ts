@@ -8,6 +8,7 @@ import {startServer} from "./server/server";
 
 export function mockDatabaseForEach() {
     const sinon = createSandbox();
+    // afterEach(() => sinon.restore());
 
     let helper: MongodHelper;
 
@@ -23,7 +24,6 @@ export function mockDatabaseForEach() {
         await disconnect();
         helper.mongoBin.childProcess.kill();
     });
-    afterEach(() => sinon.restore());
 }
 
 export function startServerForEach() {
@@ -35,23 +35,22 @@ export function startServerForEach() {
 export const BASE_URL = `http://localhost:${process.env.PORT || 8081}`;
 
 /** @returns Fake instance of {@link module:typeorm~Repository}, where supported functions are {@link module:sinon~SinonStub}. */
-export function stubRepositoryForEach(repository: string): { findOneById: SinonStub, save: SinonStub } {
+export function stubRepositoryForEach(repository: string): () => { findOneById: SinonStub, save: SinonStub } {
     const sinon = createSandbox();
+    afterEach(() => sinon.restore());
 
-    let findOneById: SinonStub = sinon.stub();
-    let save: SinonStub = sinon.stub();
-
-    const repositoryStub = {findOneById, save};
+    let findOneById: SinonStub;
+    let save: SinonStub;
 
     beforeEach(() => {
         findOneById = sinon.stub();
-        save = sinon.stub();
+        save = sinon.stub().resolves(42);
         sinon
             .stub(repositories, repository as "userRepositoryFactory") // force cast with any key
-            .returns(repositoryStub);
+            .returns({findOneById, save});
     });
 
-    afterEach(() => sinon.restore());
-
-    return repositoryStub;
+    return () => {
+        return {findOneById, save};
+    };
 }

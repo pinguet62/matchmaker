@@ -7,7 +7,7 @@ describe("services/proposition.service", () => {
 
     describe(`${incrementProposition}`, () => {
         test("Throw 'NotFoundException' if unknown 'Proposition.id'", async () => {
-            propositionRepositoryStub.findOneById.resolves(null);
+            propositionRepositoryStub().findOneById.resolves(null);
 
             await expect(incrementProposition("any", "unknown", "any")).rejects.toThrow(NotFoundException);
         });
@@ -15,12 +15,13 @@ describe("services/proposition.service", () => {
         test("New voter, should increment 'up' and save voter", async () => {
             const voter = "voter";
 
-            propositionRepositoryStub.findOneById.resolves({
+            propositionRepositoryStub().findOneById.resolves({
                 down: 0,
                 downVoters: [],
                 up: 0,
                 upVoters: [],
             });
+            propositionRepositoryStub().save.callsFake((x) => x);
 
             const proposition = await incrementProposition("any", "any", voter);
 
@@ -33,12 +34,13 @@ describe("services/proposition.service", () => {
         test("When already voted, should reset 'up' and remove voter", async () => {
             const voter = "voter";
 
-            propositionRepositoryStub.findOneById.resolves({
+            propositionRepositoryStub().findOneById.resolves({
                 down: 0,
                 downVoters: [],
                 up: 1,
                 upVoters: [voter],
             });
+            propositionRepositoryStub().save.callsFake((x) => x);
 
             const proposition = await incrementProposition("any", "any", voter);
 
@@ -51,12 +53,13 @@ describe("services/proposition.service", () => {
         test("When previously voted '-1', should change voteto '+1'", async () => {
             const voter = "voter";
 
-            propositionRepositoryStub.findOneById.resolves({
+            propositionRepositoryStub().findOneById.resolves({
                 down: 1,
                 downVoters: [voter],
                 up: 0,
                 upVoters: [],
             });
+            propositionRepositoryStub().save.callsFake((x) => x);
 
             const proposition = await incrementProposition("any", "any", voter);
 
@@ -69,7 +72,7 @@ describe("services/proposition.service", () => {
 
     describe(`${decrementProposition}`, () => {
         test("Throw 'NotFoundException' if unknown 'Proposition.id'", async () => {
-            propositionRepositoryStub.findOneById.resolves(null);
+            propositionRepositoryStub().findOneById.resolves(null);
 
             await expect(decrementProposition("any", "unknown", "any")).rejects.toThrow(NotFoundException);
         });
@@ -77,12 +80,13 @@ describe("services/proposition.service", () => {
         test("New voter, should decrement 'up' and save voter", async () => {
             const voter = "voter";
 
-            propositionRepositoryStub.findOneById.resolves({
+            propositionRepositoryStub().findOneById.resolves({
                 down: 0,
                 downVoters: [],
                 up: 0,
                 upVoters: [],
             });
+            propositionRepositoryStub().save.callsFake((x) => x);
 
             const proposition = await decrementProposition("any", "any", voter);
 
@@ -95,12 +99,13 @@ describe("services/proposition.service", () => {
         test("When already voted, should reset 'up' and remove voter", async () => {
             const voter = "voter";
 
-            propositionRepositoryStub.findOneById.resolves({
+            propositionRepositoryStub().findOneById.resolves({
                 down: 1,
                 downVoters: [voter],
                 up: 0,
                 upVoters: [],
             });
+            propositionRepositoryStub().save.callsFake((x) => x);
 
             const proposition = await decrementProposition("any", "any", voter);
 
@@ -113,12 +118,13 @@ describe("services/proposition.service", () => {
         test("When previously voted '-1', should change voteto '+1'", async () => {
             const voter = "voter";
 
-            propositionRepositoryStub.findOneById.resolves({
+            propositionRepositoryStub().findOneById.resolves({
                 down: 0,
                 downVoters: [],
                 up: 1,
                 upVoters: [voter],
             });
+            propositionRepositoryStub().save.callsFake((x) => x);
 
             const proposition = await decrementProposition("any", "any", voter);
 
@@ -131,7 +137,7 @@ describe("services/proposition.service", () => {
 
     describe(`${deleteProposition}`, () => {
         test("Throw 'NotFoundException' if unknown 'Proposition.id'", async () => {
-            propositionRepositoryStub.findOneById.resolves(null);
+            propositionRepositoryStub().findOneById.resolves(null);
 
             await expect(deleteProposition("any", "unknown")).rejects.toThrow(NotFoundException);
         });

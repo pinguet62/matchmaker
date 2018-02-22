@@ -1,8 +1,9 @@
 import {TinderCredentials} from "../../database/entities";
 import {IMatch, IMessage, IPerson} from "../../dto";
 import {IProvider} from "../provider";
+import {formatProviderId} from "../providerUtils";
 import * as tinderClient from "./tinder-client";
-import {IJobDto} from "./tinder-client";
+import {getMeta, IJobDto} from "./tinder-client";
 
 export function formatJob(job: IJobDto): string {
     if (job.title && job.company) {
@@ -21,11 +22,15 @@ export function calculateAge(birthDate: string) {
 }
 
 export default class TinderProvider implements IProvider {
+    public getUserId(secret: string): Promise<string> {
+        return getMeta(secret).then((x) => x.user._id);
+    }
+
     public getMatches(credentials: TinderCredentials): Promise<IMatch[]> {
         return tinderClient.getMatches(credentials.token)
             .then((x) => x.map((it) => {
                 return {
-                    id: it._id,
+                    id: formatProviderId({provider: "tinder", id: it._id}),
                     lastMessage: it.messages.length === 0 ? undefined : {
                         sent: credentials.userId === it.messages[0].from,
                         text: it.messages[0].message,
@@ -38,8 +43,9 @@ export default class TinderProvider implements IProvider {
             }));
     }
 
-    public getProfile(credentials: TinderCredentials, tinderUserId: string): Promise<IPerson> {
-        return tinderClient.getUser(credentials.token, tinderUserId)
+    public getProfile(credentials: TinderCredentials, matchId: string): Promise<IPerson> {
+        const userId = matchId.substr(24, 24);
+        return tinderClient.getUser(credentials.token, userId)
             .then((it) => {
                 return {
                     age: calculateAge(it.birth_date),

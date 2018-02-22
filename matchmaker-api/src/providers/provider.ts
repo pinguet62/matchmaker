@@ -4,6 +4,8 @@ import TinderProvider from "./tinder/tinder-provider";
 
 // TODO "any" to "Credentials"
 export interface IProvider {
+    getUserId(credentials: any): Promise<string>;
+
     getMatches(credentials: any): Promise<IMatch[]>;
 
     getProfile(credentials: any, personId: string): Promise<IPerson>;
@@ -13,13 +15,24 @@ export interface IProvider {
 
 export function getProvider(provider: string): IProvider {
     switch (provider) { // TODO Factory interface
-        case  "tinder":
+        case "tinder":
             return new TinderProvider();
-        case  "once":
+        case "once":
             return new OnceProvider();
         default:
-            throw new Error(`Unknown provider ${provider}`);
+            throw new UnsupportedProviderError(`Unknown provider ${provider}`);
     }
+}
+
+export function getProviders(): { [key: string]: IProvider } {
+    return {
+        once: new OnceProvider(),
+        tinder: new TinderProvider(),
+    };
+}
+
+export function getProviderIds(): string[] {
+    return ["tinder", "once"];
 }
 
 export class UnsupportedProviderError extends Error {

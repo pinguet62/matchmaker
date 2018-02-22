@@ -24,7 +24,6 @@ describe.skip("providers/once/once-client", () => {
         for (const it of result) {
             expect(it).toHaveProperty("id");
             expect(it).toHaveProperty("sender_id");
-            expect(it).toHaveProperty("receiver_id");
             expect(it).toHaveProperty("message");
             expect(it).toHaveProperty("created_at");
         }
