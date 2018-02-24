@@ -1,42 +1,72 @@
-import {IMatch, IMessage, IPerson} from "../dto";
-import OnceProvider from "./once/once-provider";
-import TinderProvider from "./tinder/tinder-provider";
+import {Credentials, ICredentials} from "../database/entities";
+import {getProviderAction, IProviderAction} from "./providerAction";
 
-// TODO "any" to "Credentials"
-export interface IProvider {
-    getUserId(credentials: any): Promise<string>;
-
-    getMatches(credentials: any): Promise<IMatch[]>;
-
-    getProfile(credentials: any, personId: string): Promise<IPerson>;
-
-    getMessagesByProfile(credentials: any, profileId: string): Promise<IMessage[]>;
+export interface IProvider<T> {
+    once: T;
+    tinder: T;
 }
 
-export function getProvider(provider: string): IProvider {
-    switch (provider) { // TODO Factory interface
-        case "tinder":
-            return new TinderProvider();
-        case "once":
-            return new OnceProvider();
-        default:
-            throw new UnsupportedProviderError(`Unknown provider ${provider}`);
-    }
+// TODO polish this workaround (for entity)
+export interface IProviderOptional<T> {
+    once?: T;
+    tinder?: T;
 }
 
-export function getProviders(): { [key: string]: IProvider } {
+export type ProviderKey = keyof IProvider<void>;
+
+/**
+ * Unique ID for this application,
+ * is the pair: provider key + provider'ID.
+ */
+export interface IProviderId {
+    providerKey: ProviderKey;
+    id: string;
+}
+
+/** Should be reverse function of {@link parseProviderId}. */
+export function formatProviderId(providerId: IProviderId): string {
+    return `${providerId.providerKey}_${providerId.id}`;
+}
+
+/** Should be reverse function of {@link formatProviderId}. */
+export function parseProviderId(providerId: string): IProviderId {
+    const data = providerId.split("_");
     return {
-        once: new OnceProvider(),
-        tinder: new TinderProvider(),
+        id: data[1],
+        providerKey: data[0] as ProviderKey,
     };
 }
 
-export function getProviderIds(): string[] {
-    return ["tinder", "once"];
+export function getProviderKeys(): ProviderKey[] {
+    return ["once", "tinder"];
 }
 
 export class UnsupportedProviderError extends Error {
-    constructor(private provider: string) {
-        super();
+    constructor(providerKey: ProviderKey) {
+        super(`Unknown provider ${providerKey}`);
     }
+}
+
+/** Factory method used for *type safe* switch between each provider. */
+export function providerFactory<T>(providerKey: ProviderKey, providerFcts: IProvider<() => T>): T {
+    const fct = providerFcts[providerKey];
+    if (!fct) {
+        throw new UnsupportedProviderError(providerKey);
+    }
+    return fct();
+}
+
+export async function forEachProvider<T>(
+    credentials: Credentials,
+    fct: (providerAction: IProviderAction, providerCredentials: ICredentials) => Promise<T[]>,
+): Promise<T[]> {
+    let results: T[] = [];
+    for (const providerKey of getProviderKeys()) {
+        if (credentials[providerKey]) {
+            const providerAction = getProviderAction(providerKey);
+            const providerCredentials = credentials[providerKey] as ICredentials;
+            results = results.concat(await fct(providerAction, providerCredentials));
+        }
+    }
+    return results;
 }

@@ -43,6 +43,11 @@ export interface IMessage {
     created_at: number;
 }
 
+export interface IMatchResults {
+    match: IMatchDto;
+    base_url: string; // for `match.user.pictures.*.original`
+}
+
 export interface IMatchDto {
     id: string;
     number: number;
@@ -52,7 +57,7 @@ export interface IMatchDto {
     };
 }
 
-export async function getMatch(authorization: string, matchId: string): Promise<IMatchDto> {
+export async function getMatch(authorization: string, matchId: string): Promise<IMatchResults> {
     return await request({
         headers: {
             authorization,
@@ -60,7 +65,7 @@ export async function getMatch(authorization: string, matchId: string): Promise<
         json: true,
         method: "GET",
         url: `https://onceapi.com/v1/match/${matchId}`,
-    }).then((x) => x.result.match);
+    }).then((x) => x.result);
 }
 
 export async function getConnections(authorization: string): Promise<IConnectionResults> {

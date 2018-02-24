@@ -9,7 +9,7 @@ export enum Status {
     UP_TO_DATE = "up_to_date",
 }
 
-export type CredentialStatus = ({ [provider: string]: Status });
+export type CredentialStatus = ({ [providerKey: string]: Status });
 
 export interface IMatch {
     id: string;

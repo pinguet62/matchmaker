@@ -1,6 +1,7 @@
 import {IsArray, IsDefined, IsInt, IsNotEmpty, IsOptional, IsString, Min, ValidateNested} from "class-validator";
 import {ObjectID} from "mongodb";
 import {Column, Entity, ObjectIdColumn} from "typeorm";
+import {IProviderOptional} from "../providers/provider";
 import {IsInstance} from "../utils";
 
 export class SharedLink {
@@ -17,7 +18,11 @@ export class SharedLink {
     }
 }
 
-export class TinderCredentials {
+export interface ICredentials {
+    userId: string;
+}
+
+export class TinderCredentials implements ICredentials {
     @IsDefined()
     public userId: string;
 
@@ -31,7 +36,7 @@ export class TinderCredentials {
     }
 }
 
-export class OnceCredentials {
+export class OnceCredentials implements ICredentials {
     @IsDefined()
     public userId: string;
 
@@ -45,7 +50,7 @@ export class OnceCredentials {
     }
 }
 
-export class Credentials {
+export class Credentials implements IProviderOptional<ICredentials> {
     @ValidateNested()
     public tinder?: TinderCredentials;
 

@@ -1,5 +1,5 @@
 import {createSandbox} from "sinon";
-import {calculateAge, formatJob} from "./tinder-provider";
+import {calculateAge, formatJob} from "./tinder-providerAction";
 
 describe("providers/tinder/tinder-provider", () => {
     const sinon = createSandbox();

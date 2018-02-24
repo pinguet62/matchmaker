@@ -2,7 +2,7 @@ import {SharedLink} from "../database/entities";
 import {userRepositoryFactory} from "../database/repositories";
 import {IMatch, ISharedLink} from "../dto";
 import {NotFoundException} from "../exceptions";
-import {getProvider, getProviderIds} from "../providers/provider";
+import {forEachProvider} from "../providers/provider";
 
 export async function createEmptySharedLink(userId: string): Promise<ISharedLink> {
     const user = await userRepositoryFactory().findOneById(userId);
@@ -42,13 +42,10 @@ export async function getMatchesByUser(userId: string): Promise<IMatch[]> {
         throw new NotFoundException();
     }
 
-    let matches: IMatch[] = [];
-    for (const providerId of getProviderIds()) {
-        const credentials = (user.credentials as any)[providerId];
-        const providerMatches = await getProvider(providerId).getMatches(credentials);
-        matches = matches.concat(providerMatches);
-    }
-    return matches;
+    return forEachProvider(
+        user.credentials,
+        (providerAction, credentials) => providerAction.getMatches(credentials),
+    );
 }
 
 export async function getSharedLinks(userId: string): Promise<ISharedLink[]> {

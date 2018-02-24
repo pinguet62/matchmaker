@@ -8,7 +8,7 @@ import {startServer} from "./server/server";
 
 export function mockDatabaseForEach() {
     const sinon = createSandbox();
-    // afterEach(() => sinon.restore());
+    afterEach(() => sinon.restore());
 
     let helper: MongodHelper;
 
@@ -18,7 +18,7 @@ export function mockDatabaseForEach() {
         helper = new MongodHelper(["--port", port, "--dbpath", tmpdir()]);
         await helper.run();
         await connect();
-    });
+    }, 10000); // first "mongodb-prebuilt" execution download & install MongoDb
 
     afterEach(async () => {
         await disconnect();

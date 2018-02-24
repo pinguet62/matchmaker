@@ -4,13 +4,13 @@ import {IMatch} from "../../dto";
 import {getMatches} from "../tinder/tinder-client";
 import * as onceClient from "./once-client";
 import {IConnectionResults} from "./once-client";
-import OnceProvider from "./once-provider";
+import OnceProviderAction from "./once-providerAction";
 
 describe("providers/once/once-provider", () => {
     const sinon = createSandbox();
     afterEach(() => sinon.restore());
 
-    describe(`${OnceProvider.name}`, () => {
+    describe(`${OnceProviderAction.name}`, () => {
         describe(`${getMatches.name}`, () => {
             test("Should for photo URL", async () => {
                 sinon.stub(onceClient, "getConnections").resolves({
@@ -39,18 +39,19 @@ describe("providers/once/once-provider", () => {
                     ],
                 } as IConnectionResults);
 
-                const result: IMatch[] = await new OnceProvider().getMatches(sinon.createStubInstance(OnceCredentials));
+                const result: IMatch[] = await new OnceProviderAction().getMatches(sinon.createStubInstance(OnceCredentials));
 
-                expect(result[0].person.photo).toEqual("https://d110abryny6tab.cloudfront.net/pictures/MATCHID/PHOTOID_original.jpg");
+                expect(result[0].person.photo).toEqual("https://d110abryny6tab.cloudfront.net/pictures/USERID/PHOTOID_original.jpg");
             });
 
+            /** @see IConnectionDto#last_message_id */
             test("When not yet exchanged a message, should not generate 'lastMessage'", async () => {
                 sinon.stub(onceClient, "getConnections").resolves({
                     base_url: "https://d110abryny6tab.cloudfront.net/pictures",
                     connections: [
                         {
                             last_message: "Vous avez été connectés",
-                            last_message_id: 0, // <--
+                            last_message_id: 0,
                             match_id: "MATCHID",
                             message_sent_at: 1513528924,
                             sender_id: "MATCHID",
@@ -71,7 +72,7 @@ describe("providers/once/once-provider", () => {
                     ],
                 } as IConnectionResults);
 
-                const result: IMatch[] = await new OnceProvider().getMatches(sinon.createStubInstance(OnceCredentials));
+                const result: IMatch[] = await new OnceProviderAction().getMatches(sinon.createStubInstance(OnceCredentials));
 
                 expect(result[0].lastMessage).toBeUndefined();
             });

@@ -1,7 +1,7 @@
 import {TinderCredentials} from "../../database/entities";
 import {IMatch, IMessage, IPerson} from "../../dto";
-import {IProvider} from "../provider";
-import {formatProviderId} from "../providerUtils";
+import {formatProviderId} from "../provider";
+import {IProviderAction} from "../providerAction";
 import * as tinderClient from "./tinder-client";
 import {getMeta, IJobDto} from "./tinder-client";
 
@@ -21,7 +21,7 @@ export function calculateAge(birthDate: string) {
     return new Date(Date.now()).getFullYear() - parseInt(birthDate.substr(0, 4), 10) - 1;
 }
 
-export default class TinderProvider implements IProvider {
+export default class TinderProviderAction implements IProviderAction {
     public getUserId(secret: string): Promise<string> {
         return getMeta(secret).then((x) => x.user._id);
     }
@@ -30,7 +30,7 @@ export default class TinderProvider implements IProvider {
         return tinderClient.getMatches(credentials.token)
             .then((x) => x.map((it) => {
                 return {
-                    id: formatProviderId({provider: "tinder", id: it._id}),
+                    id: formatProviderId({providerKey: "tinder", id: it._id}),
                     lastMessage: it.messages.length === 0 ? undefined : {
                         sent: credentials.userId === it.messages[0].from,
                         text: it.messages[0].message,

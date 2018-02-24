@@ -1,5 +1,6 @@
 import {EntityRepository, getCustomRepository} from "typeorm";
 import {MongoRepository} from "typeorm/repository/MongoRepository";
+import {ProviderKey} from "../providers/provider";
 import {Proposition, SharedLink, User} from "./entities";
 
 export const userRepositoryFactory: () => UserRepository & MongoRepository<User> =
@@ -14,10 +15,10 @@ export class UserRepository extends MongoRepository<User> {
     /**
      * @param tinderUserId {@link User#tinderUserId}
      */
-    public async findOneByCredentialUserId(provider: string, providerUserId: string): Promise<User | undefined> {
+    public async findOneByCredentialUserId(providerKey: ProviderKey, providerUserId: string): Promise<User | undefined> {
         // TODO query
         for (const user of await super.find()) {
-            if ((user.credentials as any)[provider] && (user.credentials as any)[provider].userId === providerUserId) {
+            if (user.credentials[providerKey] && user.credentials[providerKey]!.userId === providerUserId) {
                 return user;
             }
         }

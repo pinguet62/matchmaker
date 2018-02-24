@@ -1,8 +1,8 @@
 import {userRepositoryFactory} from "../database/repositories";
 import {IMatch, IMessage, IPerson} from "../dto";
 import {NotFoundException} from "../exceptions";
-import {getProvider, getProviderIds} from "../providers/provider";
-import {parseProviderId} from "../providers/providerUtils";
+import {forEachProvider, parseProviderId} from "../providers/provider";
+import {getProviderAction} from "../providers/providerAction";
 
 export async function getMatchesByUserSharedLinkLink(sharedLinkLink: string): Promise<IMatch[]> {
     const user = await userRepositoryFactory().findOneBySharedLinkLink(sharedLinkLink);
@@ -15,14 +15,10 @@ export async function getMatchesByUserSharedLinkLink(sharedLinkLink: string): Pr
         throw new NotFoundException();
     }
 
-    // TODO utility function or Array.reduce()
-    // TODO User.credentials[providerId] check
-    let matches: IMatch[] = [];
-    for (const providerId of getProviderIds()) {
-        const credentials = (user.credentials as any)[providerId];
-        const providerMatches = await getProvider(providerId).getMatches(credentials);
-        matches = matches.concat(providerMatches);
-    }
+    const matches: IMatch[] = await forEachProvider(
+        user.credentials,
+        (providerAction, credentials) => providerAction.getMatches(credentials),
+    );
 
     // right restriction
     return matches.filter((it) => sharedLink.matchIds.includes(it.id));
@@ -34,8 +30,8 @@ export async function getMessagesByMatch(sharedLinkLink: string, matchId: string
         throw new NotFoundException();
     }
 
-    const {provider, id} = parseProviderId(matchId);
-    return getProvider(provider).getMessagesByProfile((user.credentials as any)[provider], id);
+    const {providerKey, id} = parseProviderId(matchId);
+    return getProviderAction(providerKey).getMessagesByProfile(user.credentials[providerKey]!, id);
 }
 
 export async function getUser(sharedLinkLink: string, matchId: string): Promise<IPerson> {
@@ -44,6 +40,6 @@ export async function getUser(sharedLinkLink: string, matchId: string): Promise<
         throw new NotFoundException();
     }
 
-    const {provider, id} = parseProviderId(matchId);
-    return getProvider(provider).getProfile((user.credentials as any)[provider], id);
+    const {providerKey, id} = parseProviderId(matchId);
+    return getProviderAction(providerKey).getProfile(user.credentials[providerKey]!, id);
 }
