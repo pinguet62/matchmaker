@@ -14,10 +14,7 @@ Vue.filter('date', date)
 Vue.filter('parseIso8601', parseIso8601)
 Vue.filter('age', calculateAge)
 
-/* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: {App}
-})
+  render: h => h(App),
+  router
+}).$mount('#app')

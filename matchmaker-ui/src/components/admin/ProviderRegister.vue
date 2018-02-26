@@ -32,7 +32,7 @@
     },
     methods: {
       async checkStatus () {
-        this.status = (await axios.get(`${process.env.API_URL}/login/status`, {headers: {userId: this.$store.state.userId}})).data
+        this.status = (await axios.get(`${process.env.VUE_APP_API_URL}/login/status`, {headers: {userId: this.$store.state.userId}})).data
       },
       formatProviderStatus (provider, status) {
         switch (status) {
@@ -47,7 +47,7 @@
         }
       },
       async registerProvider (provider, secret) {
-        await axios.put(`${process.env.API_URL}/login/${provider}`, {secret}, {headers: {userId: this.$store.state.userId}})
+        await axios.put(`${process.env.VUE_APP_API_URL}/login/${provider}`, {secret}, {headers: {userId: this.$store.state.userId}})
         await this.checkStatus()
       }
     }

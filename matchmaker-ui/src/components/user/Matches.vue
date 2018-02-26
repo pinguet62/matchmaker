@@ -43,7 +43,7 @@
       }
     },
     async created () {
-      this.matches = (await axios.get(`${process.env.API_URL}/${this.$route.params.sharedLinkLink}/matches`)).data
+      this.matches = (await axios.get(`${process.env.VUE_APP_API_URL}/${this.$route.params.sharedLinkLink}/matches`)).data
     }
   }
 </script>

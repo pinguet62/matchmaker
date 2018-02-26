@@ -43,26 +43,26 @@
     methods: {
       async refreshMatch (route) {
         this.matchId = route.params.matchId
-        this.messages = (await axios.get(`${process.env.API_URL}/${this.sharedLinkLink}/matches/${this.matchId}/messages`)).data
-        this.propositions = (await axios.get(`${process.env.API_URL}/matches/${this.matchId}/propositions`)).data
-        this.profile = (await axios.get(`${process.env.API_URL}/${this.sharedLinkLink}/user/${this.matchId}`)).data
+        this.messages = (await axios.get(`${process.env.VUE_APP_API_URL}/${this.sharedLinkLink}/matches/${this.matchId}/messages`)).data
+        this.propositions = (await axios.get(`${process.env.VUE_APP_API_URL}/matches/${this.matchId}/propositions`)).data
+        this.profile = (await axios.get(`${process.env.VUE_APP_API_URL}/${this.sharedLinkLink}/user/${this.matchId}`)).data
       },
       async onNewProposition (message) {
-        let createdProposition = (await axios.post(`${process.env.API_URL}/matches/${this.matchId}/propositions`, {message})).data
+        let createdProposition = (await axios.post(`${process.env.VUE_APP_API_URL}/matches/${this.matchId}/propositions`, {message})).data
         this.propositions.push(createdProposition)
       },
       async onDeleteProposition (proposition) {
         let propositionId = proposition.id
-        await axios.delete(`${process.env.API_URL}/matches/${this.matchId}/propositions/${propositionId}`)
+        await axios.delete(`${process.env.VUE_APP_API_URL}/matches/${this.matchId}/propositions/${propositionId}`)
         this.propositions.splice(this.propositions.findIndex(it => it.id === propositionId), 1)
       },
       async onUpProposition (proposition) {
-        let updatedProposition = (await axios.put(`${process.env.API_URL}/matches/${this.matchId}/propositions/${proposition.id}/up`)).data
+        let updatedProposition = (await axios.put(`${process.env.VUE_APP_API_URL}/matches/${this.matchId}/propositions/${proposition.id}/up`)).data
         proposition.up = updatedProposition.up
         proposition.down = updatedProposition.down
       },
       async onDownProposition (proposition) {
-        let updatedProposition = (await axios.put(`${process.env.API_URL}/matches/${this.matchId}/propositions/${proposition.id}/down`)).data
+        let updatedProposition = (await axios.put(`${process.env.VUE_APP_API_URL}/matches/${this.matchId}/propositions/${proposition.id}/down`)).data
         proposition.up = updatedProposition.up
         proposition.down = updatedProposition.down
       }

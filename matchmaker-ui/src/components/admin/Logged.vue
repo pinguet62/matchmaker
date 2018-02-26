@@ -90,24 +90,24 @@
         this.$store.state.userId = null
       },
       async loadMatches () {
-        this.matches = (await axios.get(`${process.env.API_URL}/matches`, {headers: {userId: this.userId}})).data
+        this.matches = (await axios.get(`${process.env.VUE_APP_API_URL}/matches`, {headers: {userId: this.userId}})).data
       },
       async loadSharedLinks () {
-        this.sharedLinks = (await axios.get(`${process.env.API_URL}/sharedLinks`, {headers: {userId: this.userId}})).data
+        this.sharedLinks = (await axios.get(`${process.env.VUE_APP_API_URL}/sharedLinks`, {headers: {userId: this.userId}})).data
       },
       async onCreateSharedLink () {
-        let createdSharedLink = (await axios.post(`${process.env.API_URL}/sharedLinks`, null, {headers: {userId: this.userId}})).data
+        let createdSharedLink = (await axios.post(`${process.env.VUE_APP_API_URL}/sharedLinks`, null, {headers: {userId: this.userId}})).data
         this.sharedLinks.push(createdSharedLink)
         this.selectedSharedLink = createdSharedLink
       },
       async onDeleteSharedLink () {
         let sharedLinkLink = this.selectedSharedLink.link
-        await axios.delete(`${process.env.API_URL}/sharedLinks/${sharedLinkLink}`, {headers: {userId: this.userId}})
+        await axios.delete(`${process.env.VUE_APP_API_URL}/sharedLinks/${sharedLinkLink}`, {headers: {userId: this.userId}})
         this.sharedLinks.splice(this.sharedLinks.findIndex(it => it.link === sharedLinkLink), 1)
         this.selectedSharedLink = null
       },
       async onSaveSharedLinkMatches () {
-        await axios.put(`${process.env.API_URL}/sharedLinks/${this.selectedSharedLink.link}`, this.selectedSharedLink.matchIds, {headers: {userId: this.userId}})
+        await axios.put(`${process.env.VUE_APP_API_URL}/sharedLinks/${this.selectedSharedLink.link}`, this.selectedSharedLink.matchIds, {headers: {userId: this.userId}})
       },
       copyToClipbord (textFieldRef) {
         textFieldRef.$el.getElementsByTagName('input')[0].select()

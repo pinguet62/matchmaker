@@ -15,7 +15,9 @@ export default new Vuex.Store({
   },
   actions: {
     async login ({commit, state}, {provider, secret}) {
-      state.userId = (await axios.post(`${process.env.API_URL}/login/${provider}`, {secret})).data
+      console.log('process.env', process.env)
+      console.log('process.env.VUE_APP_API_URL', process.env.VUE_APP_API_URL)
+      state.userId = (await axios.post(`${process.env.VUE_APP_API_URL}/login/${provider}`, {secret})).data
     }
   }
 })
