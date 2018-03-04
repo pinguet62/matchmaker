@@ -5,12 +5,14 @@ import {Application} from "express";
 import {Server} from "http";
 import exceptionMiddleware from "./exceptionMiddleware";
 import router from "./router";
+import {sessionMiddleware} from "./session";
 
 export function startServer(): Server {
     const app: Application = express();
 
     app.use(cors());
     app.use(json());
+    app.use(sessionMiddleware);
     app.use(router);
     app.use(exceptionMiddleware);
 
