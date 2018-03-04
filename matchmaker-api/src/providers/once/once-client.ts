@@ -1,4 +1,4 @@
-import * as request from "request-promise";
+import { get } from "request-promise";
 
 export interface IConnectionResults {
     connections: IConnectionDto[];
@@ -58,45 +58,41 @@ export interface IMatchDto {
 }
 
 export async function getMatch(authorization: string, matchId: string): Promise<IMatchResults> {
-    return await request({
+    return await get({
         headers: {
             authorization,
         },
         json: true,
-        method: "GET",
         url: `https://onceapi.com/v1/match/${matchId}`,
-    }).then((x) => x.result);
+    }).then((x: any) => x.result);
 }
 
 export async function getConnections(authorization: string): Promise<IConnectionResults> {
-    return request({
+    return get({
         headers: {
             authorization,
         },
         json: true,
-        method: "GET",
         url: "https://onceapi.com/v1/connections",
-    }).then((x) => x.result);
+    }).then((x: any) => x.result);
 }
 
 export async function getMessagesByMatch(authorization: string, matchId: string): Promise<IMessage[]> {
-    return await request({
+    return await get({
         headers: {
             authorization,
         },
         json: true,
-        method: "GET",
         url: `https://onceapi.com/v1/messages?match_id=${matchId}`,
-    }).then((x) => x.result.messages);
+    }).then((x: any) => x.result.messages);
 }
 
 export async function getMe(authorization: string): Promise<IUserDto> {
-    return await request({
+    return await get({
         headers: {
             authorization,
         },
         json: true,
-        method: "GET",
         url: `https://onceapi.com/v1/user/me`,
-    }).then((x) => x.result.user);
+    }).then((x: any) => x.result.user);
 }

@@ -1,4 +1,4 @@
-import * as request from "request-promise";
+import { get } from "request-promise";
 
 export interface IMatchDto {
     _id: string;
@@ -40,45 +40,41 @@ export interface IMetaDto {
 }
 
 export async function getMeta(token: string): Promise<IMetaDto> {
-    return request({
+    return get({
         headers: {
             "x-auth-token": token,
         },
         json: true,
-        method: "GET",
         url: `https://api.gotinder.com/meta`,
     });
 }
 
 export async function getUser(token: string, userId: string): Promise<IUserDto> {
-    return await request({
+    return await get({
         headers: {
             "x-auth-token": token,
         },
         json: true,
-        method: "GET",
         url: `https://api.gotinder.com/user/${userId}`,
-    }).then((x) => x.results);
+    }).then((x: any) => x.results);
 }
 
 export async function getMatches(token: string): Promise<IMatchDto[]> {
-    return request({
+    return get({
         headers: {
             "x-auth-token": token,
         },
         json: true,
-        method: "GET",
         url: "https://api.gotinder.com/v2/matches",
-    }).then((x) => x.data.matches);
+    }).then((x: any) => x.data.matches);
 }
 
 export async function getMessagesByMatch(token: string, matchId: string): Promise<IMessage[]> {
-    return await request({
+    return await get({
         headers: {
             "x-auth-token": token,
         },
         json: true,
-        method: "GET",
         url: `https://api.gotinder.com/v2/matches/${matchId}/messages?count=100`,
-    }).then((x) => x.data.messages);
+    }).then((x: any) => x.data.messages);
 }

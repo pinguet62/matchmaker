@@ -1,11 +1,11 @@
 import {Router} from "express";
-import * as request from "request-promise";
+import { get } from "request-promise";
 import {createSandbox} from "sinon";
 import {NotFoundException, UnauthorizedException, ValidationError} from "../exceptions";
 import {BASE_URL, startServerForEach} from "../testHelper";
 import * as router from "./router";
 
-describe("exceptions", () => {
+describe("exceptionMiddleware", () => {
     const sinon = createSandbox();
     afterEach(() => sinon.restore());
 
@@ -31,7 +31,7 @@ describe("exceptions", () => {
     test(`Should return 401 if '${UnauthorizedException.name}' thrown`, async () => {
         let error;
         try {
-            await request.get(`${BASE_URL}/unauthorized`);
+            await get(`${BASE_URL}/unauthorized`);
         } catch (e) {
             error = e;
         }
@@ -43,7 +43,7 @@ describe("exceptions", () => {
     test(`Should return 404 if '${NotFoundException.name}' thrown`, async () => {
         let error;
         try {
-            await request.get(`${BASE_URL}/not_found`);
+            await get(`${BASE_URL}/not_found`);
         } catch (e) {
             error = e;
         }
@@ -55,7 +55,7 @@ describe("exceptions", () => {
     test(`Should return 422 if '${ValidationError.name}' thrown`, async () => {
         let error;
         try {
-            await request.get(`${BASE_URL}/unprocessable_entity`);
+            await get(`${BASE_URL}/unprocessable_entity`);
         } catch (e) {
             error = e;
         }
@@ -67,7 +67,7 @@ describe("exceptions", () => {
     test(`Should return 500 if any unhandled '${Error.name}' thrown`, async () => {
         let error;
         try {
-            await request.get(`${BASE_URL}/internal_server_error`);
+            await get(`${BASE_URL}/internal_server_error`);
         } catch (e) {
             error = e;
         }

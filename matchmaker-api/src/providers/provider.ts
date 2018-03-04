@@ -23,13 +23,15 @@ export interface IProviderId {
     id: string;
 }
 
+export type ProviderIdstring = string;
+
 /** Should be reverse function of {@link parseProviderId}. */
-export function formatProviderId(providerId: IProviderId): string {
+export function formatProviderId(providerId: IProviderId): ProviderIdstring {
     return `${providerId.providerKey}_${providerId.id}`;
 }
 
 /** Should be reverse function of {@link formatProviderId}. */
-export function parseProviderId(providerId: string): IProviderId {
+export function parseProviderId(providerId: ProviderIdstring): IProviderId {
     const data = providerId.split("_");
     return {
         id: data[1],

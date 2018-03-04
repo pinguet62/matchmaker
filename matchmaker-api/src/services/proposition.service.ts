@@ -1,13 +1,14 @@
 import {Proposition} from "../database/entities";
 import {propositionRepositoryFactory} from "../database/repositories";
 import {NotFoundException} from "../exceptions";
+import {IProviderId, ProviderIdstring} from "../providers/provider";
 
-export async function createProposition(matchId: string, message: string): Promise<Proposition> {
-    const entity = new Proposition(matchId, message);
+export async function createProposition(providerMatchId: ProviderIdstring, message: string): Promise<Proposition> {
+    const entity = new Proposition(providerMatchId, message);
     return propositionRepositoryFactory().save(entity);
 }
 
-export async function decrementProposition(matchId: string, propositionId: string, voter: string): Promise<Proposition> {
+export async function decrementProposition(providerMatchId: ProviderIdstring, propositionId: string, voter: string): Promise<Proposition> {
     const proposition = await propositionRepositoryFactory().findOneById(propositionId);
     if (!proposition) {
         throw new NotFoundException();
@@ -31,7 +32,7 @@ export async function decrementProposition(matchId: string, propositionId: strin
     return propositionRepositoryFactory().save(proposition);
 }
 
-export async function deleteProposition(matchId: string, propositionId: string): Promise<Proposition> {
+export async function deleteProposition(providerMatchId: ProviderIdstring, propositionId: string): Promise<Proposition> {
     const proposition = await propositionRepositoryFactory().findOneById(propositionId);
     if (!proposition) {
         throw new NotFoundException();
@@ -40,11 +41,11 @@ export async function deleteProposition(matchId: string, propositionId: string):
     return propositionRepositoryFactory().remove(proposition);
 }
 
-export async function getPropositions(matchId: string): Promise<Proposition[]> {
-    return propositionRepositoryFactory().findByMatch(matchId);
+export async function getPropositions(providerMatchId: ProviderIdstring): Promise<Proposition[]> {
+    return propositionRepositoryFactory().findByMatch(providerMatchId);
 }
 
-export async function incrementProposition(matchId: string, propositionId: string, voter: string): Promise<Proposition> {
+export async function incrementProposition(providerMatchId: ProviderIdstring, propositionId: string, voter: string): Promise<Proposition> {
     const proposition = await propositionRepositoryFactory().findOneById(propositionId);
     if (!proposition) {
         throw new NotFoundException();
