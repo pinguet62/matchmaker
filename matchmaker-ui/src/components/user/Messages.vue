@@ -1,6 +1,6 @@
 <template>
   <v-container class="messages">
-    <div v-for="message in [...value].reverse()" class="message-line" v-bind:class="[message.sent ? 'sent' : 'received']">
+    <div v-for="message in [...value].reverse()" :key="message" class="message-line" v-bind:class="[message.sent ? 'sent' : 'received']">
       <small>{{message.date | date}}</small>
       <div class="message-bubble">
         {{message.text}}

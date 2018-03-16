@@ -12,12 +12,12 @@
           <span>{{value.age}} ans</span>
         </div>
         <template v-for="job in value.jobs">
-          <div>
+          <div :key="job">
             <v-icon>card_travel</v-icon>
             <span>{{job}}</span>
           </div>
         </template>
-        <div v-for="school in value.schools">
+        <div v-for="school in value.schools" :key="school">
           <v-icon>school</v-icon>
           <span>{{school}}</span>
         </div>

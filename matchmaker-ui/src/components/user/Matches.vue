@@ -3,7 +3,7 @@
     <v-navigation-drawer app clipped absolute v-model="navigationDrawerOpen">
       <v-list>
         <template v-for="match in matches">
-          <v-list-tile avatar :to="'/user/' + $route.params.sharedLinkLink + '/' + match.id">
+          <v-list-tile :key="match.id" avatar :to="'/user/' + $route.params.sharedLinkLink + '/' + match.id">
             <v-list-tile-avatar>
               <img v-bind:src="match.person.photo">
             </v-list-tile-avatar>
@@ -15,7 +15,7 @@
               <v-icon small v-if="match.lastMessage && match.lastMessage.sent">reply</v-icon>
             </v-list-tile-action>
           </v-list-tile>
-          <v-divider/>
+          <v-divider :key="match.id"/>
         </template>
       </v-list>
     </v-navigation-drawer>

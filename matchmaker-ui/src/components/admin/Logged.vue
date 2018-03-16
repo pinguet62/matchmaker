@@ -44,7 +44,7 @@
         <div>
           <v-list>
             <template v-for="match in matches">
-              <v-list-tile avatar>
+              <v-list-tile :key="match.id" avatar>
                 <v-list-tile-avatar>
                   <img v-bind:src="match.person.photo">
                 </v-list-tile-avatar>
@@ -55,7 +55,7 @@
                   <v-switch v-model="selectedSharedLink.matchIds" :value="match.id" hide-details/>
                 </v-list-tile-action>
               </v-list-tile>
-              <v-divider/>
+              <v-divider :key="match.id"/>
             </template>
           </v-list>
         </div>
