@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Vuetify from '@/components/validation/Vuetify'
+import VeeValidate from '@/components/validation/VeeValidate'
+import Custom from '@/components/validation/Custom'
 import Empty from '@/components/layout/Empty'
 import EmptyRouterView from '@/components/layout/EmptyRouterView'
 import Home from '@/components/Home'
@@ -15,6 +18,28 @@ export default new Router({
     {
       path: '/',
       component: Home
+    },
+    {
+      path: '/validation',
+      component: EmptyRouterView,
+      children: [
+        {
+          path: '',
+          component: Empty
+        },
+        {
+          path: 'vuetify',
+          component: Vuetify
+        },
+        {
+          path: 'vee-validate',
+          component: VeeValidate
+        },
+        {
+          path: 'custom',
+          component: Custom
+        }
+      ]
     },
     {
       path: '/admin',
