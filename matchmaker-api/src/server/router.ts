@@ -1,4 +1,5 @@
 import {Router} from "express";
+import {ProviderKey} from "../providers/provider";
 import {createEmptySharedLink, deleteSharedLink, getMatchesByUser, getSharedLinks, updateSharedLinkMatches} from "../services/admin.service";
 import {checkCredentials, login, registerCredentials} from "../services/login.service";
 import {createProposition, decrementProposition, deleteProposition, getPropositions, incrementProposition} from "../services/proposition.service";
@@ -6,6 +7,8 @@ import {getMatchesByUserSharedLinkLink, getMessagesByMatch, getUser} from "../se
 import {hashUser} from "../utils";
 
 const router = Router();
+
+router.get("/", (req, res) => res.send(""));
 
 // When user looks "shared link"...
 // display shared matches, on left side
@@ -34,8 +37,8 @@ router.put("/sharedLinks/:sharedLinkLink", async (req, res) => res.json(await up
 router.delete("/sharedLinks/:sharedLinkLink", async (req, res) => res.json(await deleteSharedLink(req.headers.userid as string, req.params.sharedLinkLink)));
 
 // Provider secret management
-router.post("/login/:providerKey", async (req, res) => res.json(await login(req.params.providerKey, req.body.secret)));
-router.put("/login/:providerKey", async (req, res) => res.json(await registerCredentials(req.headers.userid as string, req.params.providerKey, req.body.secret)));
+router.post("/login/:providerKey", async (req, res) => res.json(await login(req.params.providerKey as ProviderKey, req.body.secret)));
+router.put("/login/:providerKey", async (req, res) => res.json(await registerCredentials(req.headers.userid as string, req.params.providerKey as ProviderKey, req.body.secret)));
 router.get("/login/status", async (req, res) => res.json(await checkCredentials(req.headers.userid as string)));
 
 export default router;

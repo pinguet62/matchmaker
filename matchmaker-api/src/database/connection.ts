@@ -9,7 +9,7 @@ export async function connect() {
         entities: [User, SharedLink, Proposition],
         subscribers: [AllSubscriber],
         type: "mongodb",
-        url: process.env.MONGO_URL,
+        url: process.env.MONGODB_URI,
     });
 }
 

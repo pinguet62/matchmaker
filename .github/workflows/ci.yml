@@ -1,0 +1,33 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '8'
+      - run: npm ci
+        working-directory: ./matchmaker-api
+      - run: npm run lint
+        working-directory: ./matchmaker-api
+      - run: npm run test
+        working-directory: ./matchmaker-api
+  build-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '8'
+      - run: npm ci
+        working-directory: ./matchmaker-ui
+      - run: npm run lint
+        working-directory: ./matchmaker-ui
+      - run: npm run test
+        working-directory: ./matchmaker-ui
+      - run: npm run build
+        working-directory: ./matchmaker-ui

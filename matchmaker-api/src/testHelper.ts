@@ -13,7 +13,7 @@ export function mockDatabaseForEach() {
     let helper: MongodHelper;
 
     const port = "27017"; // default
-    beforeEach(() => sinon.stub(process, "env").value({...process.env, MONGO_URL: `mongodb://localhost:${port}`}));
+    beforeEach(() => sinon.stub(process, "env").value({...process.env, MONGODB_URI: `mongodb://localhost:${port}`}));
     beforeEach(async () => {
         helper = new MongodHelper(["--port", port, "--dbpath", tmpdir()]);
         await helper.run();

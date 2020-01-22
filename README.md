@@ -2,5 +2,7 @@
 
 Obtain help for your matches!
 
-[![Build Status](https://travis-ci.org/pinguet62/matchmaker.svg?branch=master)](https://travis-ci.org/pinguet62/matchmaker)
+[![https://github.com/pinguet62/matchmaker/actions?workflow=CI](https://github.com/pinguet62/matchmaker/workflows/CI/badge.svg)](https://github.com/pinguet62/matchmaker/actions?query=workflow%3ACI+branch%3Amaster)
+
 [![Heroku](http://heroku-badge.herokuapp.com/?app=matchmaker-ui-ci)](https://matchmaker-ui-ci.herokuapp.com)
+[![Heroku](http://heroku-badge.herokuapp.com/?app=matchmaker-api-ci)](https://matchmaker-api-ci.herokuapp.com)
