@@ -23,13 +23,13 @@
 
       <div v-if="selectedSharedLink">
         <div style="display: flex; align-items: center;">
-          <v-btn @click="copyToClipbord($refs.link)">
+          <v-btn @click="copyToClipboard($refs.link)">
             <v-icon>content_copy</v-icon>
           </v-btn>
           <v-text-field ref="link" readonly :full-width="false" hide-details :value="selectedSharedLink.link" label="Code"/>
         </div>
         <div style="display: flex; align-items: center;">
-          <v-btn @click="copyToClipbord($refs.url)">
+          <v-btn @click="copyToClipboard($refs.url)">
             <v-icon>content_copy</v-icon>
           </v-btn>
           <v-text-field ref="url" readonly :full-width="false" hide-details :value="window.location.origin + '/#/user/' + selectedSharedLink.link" label="URL"/>
@@ -109,7 +109,7 @@
       async onSaveSharedLinkMatches () {
         await axios.put(`${process.env.VUE_APP_API_URL}/sharedLinks/${this.selectedSharedLink.link}`, this.selectedSharedLink.matchIds, {headers: {userId: this.userId}})
       },
-      copyToClipbord (textFieldRef) {
+      copyToClipboard (textFieldRef) {
         textFieldRef.$el.getElementsByTagName('input')[0].select()
         document.execCommand('Copy')
       }
